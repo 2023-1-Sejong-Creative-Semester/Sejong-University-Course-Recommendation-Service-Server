@@ -37,7 +37,7 @@ router.get('/introduce',async(req,res)=>{
             break;
     }
 
-    res.json({
+    return res.json({
         intro: intro,
         language: language,
         roadmap: roadmap

@@ -28,7 +28,7 @@ router.get('/subject',async(req,res)=>{
             break;
     }
 
-    res.json({
+    return res.json({
         subject: subject
     })
 
