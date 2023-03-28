@@ -2,16 +2,28 @@ const router = require('express').Router();
 const db = require('../db');
 
 
-router.get('job?colleage&classify&occupation',async(req,res)=>{
-    let SQL = "Select * from subject where c_name = (";
-    SQL += "Select c_name from tag where json_contains('data',?,'$.')";
-    SQL = ");";
-    
+router.get('/job',async(req,res)=>{
+    const colleage = (req.body.colleage !== undefined?req.body.colleage:'*');
+    const department = (req.body.department !== undefined?req.body.department:'*');
+    const track = (req.body.track !== undefined?req.body.track:'*');
+
     const connection = db.return_connect();
 
-    connection.query(SQL,)
+    let SQL = "Select * from re_main where collage = ? and department = ? and json_contains('track',?,'$.stack')";
+    connection.query(SQL,colleage, department, track,function(err,results,field){
+        console.log(results);
+    })
+
 })
 
-router.get('subject?colleage&classify&occupation&Semester',async(req,res)=>{
-    
+router.get('/subject',async(req,res)=>{
+    const colleage = (req.body.colleage !== undefined?req.body.colleage:'*');
+    const department = (req.body.department !== undefined?req.body.department:'*');
+    const track = (req.body.track !== undefined?req.body.track:'*');
+    const semester = (req.body.semester !== undefined?req.body.semester:'*');;
+
+    let SQL = "Select * from re_main where collage = ? and department = ? and semester = ?and json_contains('track',?,'$.stack')";
+    connection.query(SQL,colleage, department, semester, track,function(err,results,field){
+        console.log(results);
+    })
 })
