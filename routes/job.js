@@ -8,9 +8,7 @@ router.get('/introduce',async(req,res)=>{
     switch(job){
         case "전자정보통신공학대학":
             const track = req.query.track;
-
             let SQL = "Select * from job_list where json_contains(`data`, '1112', '$.players')";
-
             break;
         case "소프트웨어융합대학":
             const department = req.query.department;

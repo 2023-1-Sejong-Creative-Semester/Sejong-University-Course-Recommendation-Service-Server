@@ -7,17 +7,29 @@ router.get('/',async(req,res)=>{
     type = req.query.type;
     
     const connection = db.return_connection();
-    let SQL = "select * from ?;";
+    let SQL = "select * from ??;";  //테이블명은 ??로 표현
 
+    console.log(type);
+    connection.query(SQL,[req.query.type],function(err,results,field){
+        if(err){
+            console.error(err.toString());
+            return res.status(500).json({
+                error: err.toString()
+            })
+        }
+        console.log(results);
+        return res.json({
+            data: results
+        })
+    })
 
+    /*
     switch(type){
         case "job":
             break;
         case "department":
             SQL = "Select * from department;";
             connection.query(SQL,function(err,results,field){
-                console.log(results[0]);
-                //console.log(results[0].tech_stack);
                 return res.json({
                     data: results
                 })
@@ -26,23 +38,16 @@ router.get('/',async(req,res)=>{
         case "language":
             SQL = "Select * from language;";
             connection.query(SQL,[type],function(err,results,field){
-                console.log(results[0].JSON_OBJECT);
                 return res.json({
                     data: results
                 })
             })
             break;
     }
-
-    /*
-    console.log(type);
-    connection.query(SQL,[type],function(err,results,field){
-        console.log(results);
-        return res.json({
-            data: results
-        })
-    })
     */
+    
+    
+    
 })
 
 module.exports = router;

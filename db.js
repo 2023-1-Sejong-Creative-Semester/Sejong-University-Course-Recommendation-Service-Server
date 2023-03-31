@@ -17,9 +17,7 @@ function connect(){
         }
         return next()
     };
-
-    console.log(conn);
-
+    
     connection = mysql.createConnection(conn);  // DB Connect
 
     connection.connect(function(err){
