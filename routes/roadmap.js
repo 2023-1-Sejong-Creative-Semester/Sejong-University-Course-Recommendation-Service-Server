@@ -20,13 +20,13 @@ router.get('/roadmap',async(req,res)=>{
                 roadmap += req.query.job;
                 break;
             case "Blockchain":
-                roadmap += req.query.job;
+                roadmap += "blockchain";
                 break;
             case "QA":
                 roadmap += req.query.job;
                 break;
             case "Software Architect":
-                roadmap += req.query.job;
+                roadmap += "software-architect";
                 break;
             default:
                 return res.status(500).json({
@@ -43,7 +43,7 @@ router.get('/roadmap',async(req,res)=>{
             case "Flutter":
                 roadmap += req.query.job;
                 break;
-            case "Cyber Securiry":
+            case "Cyber Security":
                 roadmap += req.query.job;
                 break;
             case "Computer Science":
@@ -70,7 +70,7 @@ router.get('/roadmap',async(req,res)=>{
             case "Python":
                 roadmap += req.query.job;
                 break;
-            case "System Desing":
+            case "System Design":
                 roadmap += req.query.job;
                 break;
             case "Java":

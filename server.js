@@ -8,11 +8,13 @@ const jobRouter = require('./routes/job');
 const roadmapRouter = require('./routes/roadmap');
 const subjectRouter = require('./routes/subject');
 const trendRouter = require('./routes/trend');
+const introRouter = require('./routes/introduce');
 
-app.use('',jobRouter);
-app.use('',roadmapRouter);
+//app.use('',jobRouter);
+app.use('/roadmap',roadmapRouter);
 app.use('',subjectRouter);
 app.use('/trend',trendRouter);
+app.use('/introduce',introRouter);
 
 db.connect();
 
