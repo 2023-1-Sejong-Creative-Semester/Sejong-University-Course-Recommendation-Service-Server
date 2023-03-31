@@ -16,7 +16,8 @@ router.get('/',async(req,res)=>{
         case "department":
             SQL = "Select * from department;";
             connection.query(SQL,function(err,results,field){
-                console.log(results);
+                console.log(results[0]);
+                //console.log(results[0].tech_stack);
                 return res.json({
                     data: results
                 })
@@ -25,7 +26,7 @@ router.get('/',async(req,res)=>{
         case "language":
             SQL = "Select * from language;";
             connection.query(SQL,[type],function(err,results,field){
-                console.log(results);
+                console.log(results[0].JSON_OBJECT);
                 return res.json({
                     data: results
                 })

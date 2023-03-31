@@ -11,7 +11,17 @@ const conn = {
 };
 
 function connect(){
+    conn.typeCast = function (field, next) {
+        if (field.type === 'JSON') {
+          return JSON.parse(field.string())
+        }
+        return next()
+    };
+
+    console.log(conn);
+
     connection = mysql.createConnection(conn);  // DB Connect
+
     connection.connect(function(err){
         if(err){
             console.error(err);
