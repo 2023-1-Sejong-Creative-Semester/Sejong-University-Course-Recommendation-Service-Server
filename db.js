@@ -28,24 +28,6 @@ function connect(){
         }
         console.log("MySQL connected");
 
-        /*
-        connection.query("show tables;",function(err,results,field){
-            console.log(results);
-        })
-
-        connection.query("select * from cource_tag;",function(err,results,field){
-            console.log(results);
-        })
-
-        connection.query("select * from main;",function(err,results,field){
-            console.log(results);
-        })
-
-        connection.query("select * from re_main;",function(err,results,field){
-            console.log(results);
-        })
-
-        */
     });
 
     return connection;
