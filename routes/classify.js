@@ -1,36 +1,41 @@
 const router = require('express').Router();
 const db = require('../db');
+const { param, route } = require('./introduce');
 
 
-router.get('/job',async(req,res)=>{
+router.post('/job',async(req,res)=>{
     try{
         const colleage = req.body.colleage;
         const track = req.body.track;
         const language = req.body.language;
         const category = req.body.category;
-    
+
+        let param2;
         let SQL = "Select * from job_list where";
     
         //param 어캐줄 지 생각
         switch(colleage){
             case "전자정보통신공학대학":
-                SQL += "joblist.job = (select job_tag.job from job_tag where stack = ? and job_list.job = job_tag.job)";
+                SQL += "joblist.job = (select distinct(job_tag.job) from job_tag where stack LIKE ? and job_list.job = job_tag.job)";
+                SQL += " and cotegory = ?;";
+                param2 = track + '\r';
                 break;
             case "소프트웨어융합대학":
-                SQL += "joblist.job = (select job_tag.job from job_tag where stack = ? and job_list.job = job_tag.job)";
+                SQL += "joblist.job = (select distinct(job_tag.job) from job_tag where stack LIKE ? and job_list.job = job_tag.job)";
+                param2 = language + '\r';
+                SQL += " and cotegory = ?;";
             default:
                 break;
         }
-
-        
     
-    
-    
-        const connection = db.return_connect();
+        const connection = db.return_connection();
     
         
-        connection.query(SQL,colleage, department, track,function(err,results,field){
+        connection.query(SQL,[param2, category],function(err,results,field){
             console.log(results);
+            return res.status(200).json({
+                results: results
+            })
         })
     }
     catch(err){
@@ -52,3 +57,5 @@ router.get('/subject',async(req,res)=>{
         console.log(results);
     })
 })
+
+module.exports = router;
