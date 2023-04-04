@@ -6,21 +6,24 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
-const jobRouter = require('./routes/job');
+//const jobRouter = require('./routes/job');
+//const subjectRouter = require('./routes/subject');
+
 const roadmapRouter = require('./routes/roadmap');
-const subjectRouter = require('./routes/subject');
 const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
+const departmentRouter = require('./routes/department');
+const languageRouter = require('./routes/language');
 
+//app.use('',subjectRouter);
 
-
-//app.use('',jobRouter);
 app.use('/roadmap',roadmapRouter);
-app.use('',subjectRouter);
 app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
+app.use('/department',departmentRouter);
+app.use('/language',languageRouter);
 
 db.connect();
 
