@@ -1,18 +1,16 @@
 const router = require('express').Router();
 const db = require('../db');
-const { param, route } = require('./introduce');
-
 
 router.post('/job',async(req,res)=>{
     try{
         const colleage = req.body.colleage;
-        const stack = req.body.stack;
+        const stack = req.body.stack + '\r';
         const category = req.body.category;
 
-        let SQL = "Select * from job_list where";
-        SQL += "joblist.job = ";
-        SQL += "( select distinct(job_tag.job) from job_tag where stack LIKE ? and job_list.job = job_tag.job )";
-        SQL += " and cotegory = ?;";
+        let SQL = "Select * from job_list ";
+        SQL += "where job_list.job = ";
+        SQL += "( select distinct(job_tag.job) from job_tag where stack = ? and job_list.job = job_tag.job )";
+        SQL += " and category = ?;";
     
         const connection = db.return_connection();
         

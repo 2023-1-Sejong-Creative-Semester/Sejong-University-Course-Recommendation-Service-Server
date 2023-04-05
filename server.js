@@ -13,8 +13,6 @@ const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
-const departmentRouter = require('./routes/department');
-const languageRouter = require('./routes/language');
 
 //app.use('',subjectRouter);
 
@@ -22,8 +20,6 @@ app.use('/roadmap',roadmapRouter);
 app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
-app.use('/department',departmentRouter);
-app.use('/language',languageRouter);
 
 db.connect();
 
