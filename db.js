@@ -15,6 +15,11 @@ function connect(){
         if (field.type === 'JSON') {
           return JSON.parse(field.string())
         }
+        /*
+        if(field.indexOf('\r') !== -1){
+            return field.replaceAll('\r','');
+        }
+        */
         return next()
     };
     
