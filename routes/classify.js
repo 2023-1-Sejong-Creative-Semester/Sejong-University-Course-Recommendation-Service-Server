@@ -10,8 +10,12 @@ router.post('/job',async(req,res)=>{
 
         let SQL = "Select job_list.*, (select group_concat(distinct stack) from job_tag where job_list.job = job_tag.job) as stack from job_list ";
         SQL += "where job_list.job = ";
-        SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job";
-        SQL += ") and category = ?;";
+        SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job )";
+        
+        //대분류가 있는 경우 where절에 category 검색 추가
+        if(category !== "*"){
+            SQL += " and category = ?;";
+        }
     
         const connection = db.return_connection();
         
@@ -19,7 +23,7 @@ router.post('/job',async(req,res)=>{
 
         let job_array = [];
 
-        connection.query(SQL,[category, stack],function(err,results,field){
+        connection.query(SQL,[category],function(err,results,field){
             if(err){
                 console.error(err);
                 return res.status(400).json({
@@ -31,6 +35,7 @@ router.post('/job',async(req,res)=>{
                 results.map(result=>{
                     for(let i=0;i<stack.length;i++){
                         if(result.stack.indexOf(stack[i]+'\r')!== -1){
+                            //정규식 이용하여 \r 제거 후 split으로 배열로 변환
                             result.stack = result.stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
                             job_array.push(result);
                             break;
@@ -114,7 +119,8 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
 
-
+            console.log('\r');
+            
             console.log(results);
             const subject = [];
 
