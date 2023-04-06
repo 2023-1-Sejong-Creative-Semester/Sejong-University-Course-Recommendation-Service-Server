@@ -116,19 +116,19 @@ router.post('/job/intro',async(req,res)=>{
 
 
             console.log(results);
-            const c_name = [];
+            const subject = [];
 
             results.map(result=>{
                 for(let i=0;i<stack.length;i++){
                     if(result.stack.indexOf(stack[i]+'\r')!== -1){
-                        c_name.push(result.c_name);
+                        subject.push(result.c_name);
                         break;
                     }
                 }
             })
                
             result.push({
-                c_name: c_name
+                subject: subject
             });
             
             return res.status(200).json({
