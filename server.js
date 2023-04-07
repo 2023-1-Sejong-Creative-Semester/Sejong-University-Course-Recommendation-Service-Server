@@ -4,6 +4,9 @@ const db = require('./db');
 const port = 3001;
 const bodyParser = require('body-parser');
 
+const collect = require('./collect');
+const collection = new collect();
+
 app.use(bodyParser.json());
 
 //const jobRouter = require('./routes/job');
@@ -34,3 +37,15 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
 });
+
+setInterval(async function () {
+
+    function readfun() {
+        return new Promise((res, rej) => {
+            res(collection.refreshstart());
+        })
+    }
+    readfun();
+
+}, 3600000*24); //24시간마다 두드림 크롤링
+
