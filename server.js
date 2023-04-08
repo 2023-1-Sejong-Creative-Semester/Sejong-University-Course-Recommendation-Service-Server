@@ -16,7 +16,7 @@ const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
-const activateRouter = require('./routes/activate');
+const activityRouter = require('./routes/activity');
 
 //app.use('',subjectRouter);
 
@@ -24,7 +24,7 @@ app.use('/roadmap',roadmapRouter);
 app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
-app.use('/activate',activateRouter);
+app.use('/activity',activityRouter);
 
 db.connect();
 
