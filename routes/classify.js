@@ -232,6 +232,7 @@ router.post('/subject/intro',async(req,res)=>{
         const stack = req.body.stack;
         const category = req.body.category;
         const semeter = req.body.semester;
+        const department = req.body.department;
         const c_name = req.body.c_name;
 
         let SQL = "SELECT bbgs.*, rm.collage, rm.department, rm.semeter, rm.track ";
@@ -248,7 +249,7 @@ router.post('/subject/intro',async(req,res)=>{
         const param = [];
 
         //여기서 WHERE 절 추가 stack 은 따로
-        if(colleage !== "*" || category !== "*" || semeter !== "*" || c_name !== "*"){
+        if(colleage !== "*" || category !== "*" || semeter !== "*" || c_name !== "*" || department !== "*"){
             SQL += "WHERE ";
         }
         
@@ -278,6 +279,12 @@ router.post('/subject/intro',async(req,res)=>{
             param.push(c_name);
         }
 
+        if(department !== "*"){
+            if(param.length !== 0)
+                SQL += "and "
+            SQL += "rm.department = ? ";
+            param.push(department);
+        }
 
         SQL += "ORDER  BY c_name; ";
 
