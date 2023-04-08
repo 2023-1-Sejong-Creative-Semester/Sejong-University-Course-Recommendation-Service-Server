@@ -307,7 +307,7 @@ router.post('/subject/intro',async(req,res)=>{
             }
             else subject_array = results;
             return res.status(200).json({
-                results: results
+                results: subject_array
             })
         })
     }
