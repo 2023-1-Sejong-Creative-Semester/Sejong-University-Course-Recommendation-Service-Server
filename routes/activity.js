@@ -28,7 +28,9 @@ router.get('/comparative',async(req,res)=>{
 })
 
 router.get('/career',async(req,res)=>{
+    /*
     try{
+        
         const connection = db.return_connection();
         const SQL = "Select * from activate;";
 
@@ -50,7 +52,7 @@ router.get('/career',async(req,res)=>{
             error: err.toString()
         })
     }
-
+    */
 })
 
 module.exports = router;

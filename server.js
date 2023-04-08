@@ -24,7 +24,7 @@ app.use('/roadmap',roadmapRouter);
 app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
-app.use('/activity',activityRouter);
+app.use('/activity',activityRouter); 
 
 db.connect();
 
@@ -38,6 +38,7 @@ app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
 });
 
+/*
 setInterval(async function () {
 
     function readfun() {
@@ -46,6 +47,7 @@ setInterval(async function () {
         })
     }
     readfun();
-
-}, 3600000*24); //24시간마다 두드림 크롤링
+    
+}, 3600000*24); //24시간마다 두드림 크롤링 3600000*24
+*/
 

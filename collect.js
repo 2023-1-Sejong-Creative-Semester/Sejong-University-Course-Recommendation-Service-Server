@@ -22,16 +22,19 @@ class collect {
         function careerRefresh() {
             return new Promise((res, rej) => {
                 setTimeout(() => {
-                    let url = `https://do.sejong.ac.kr/ko/program/all/list/all/1`;
+                    let url = `https://udream.sejong.ac.kr/`;
+                    /*
                     client.set('headers', {
                         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
                         'Accept-Charset': 'utf-8'
                     });
+                    */
                     res(url)
                 }, 500)
             })
         }
 
+        
         await comparativeRefresh().then((url) => {
             const param = {};
             client.fetch(url, param, function (err, $, res) {
@@ -59,7 +62,7 @@ class collect {
                 
                 const connection = db.return_connection();
 
-                connection.query("truncate activate",function(err,results,fields){
+                connection.query("truncate activate_comparative",function(err,results,fields){
                     if(err){
                         console.error(err);
                         return res.status(400).json({
@@ -68,7 +71,7 @@ class collect {
                     }
                 })
 
-                const SQL = "insert into activate values (?,?,?,?)";
+                const SQL = "insert into activate_comparative values (?,?,?,?)";
 
                 console.log(activate);
                 activate.map(element=>{
@@ -84,10 +87,11 @@ class collect {
                 
             });
         });
-
+        
+        /*
         await careerRefresh().then((url) => {
             const param = {};
-            client.fetch(url, param, function (err, $, res) {
+            client.fetch(url, param, function (err, $, res, body) {
                 if (err) {
                     console.log(err);
                     return;
@@ -95,8 +99,14 @@ class collect {
                 
                 const activate = [];
 
-                $("a").each(function (idx){
-                    const colleage = $(this).find(".content").find(".institution").text();
+                //console.log(body);
+                console.log($.text());
+                $("div").each(function (idx){
+
+                    
+                    console.log($(this).find(".program").text());
+                    
+                    const colleage = $(this).find(".winner").find(".institution").text();
                     const title = $(this).find(".detail").find(".title").text();
                     const link = "https://do.sejong.ac.kr" + $(this).attr("href");
                     if(colleage === "소프트웨어융합대학 " || colleage === "전자정보통신공학대학"){
@@ -107,7 +117,9 @@ class collect {
                             url: link
                         })
                     }
+                    
                 })
+                
                 
                 
                 const connection = db.return_connection();
@@ -137,6 +149,7 @@ class collect {
                 
             });
         });
+        */
     }
 }
 module.exports = collect;
