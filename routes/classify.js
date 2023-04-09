@@ -26,7 +26,7 @@ router.post('/job',async(req,res)=>{
         connection.query(SQL,[category],function(err,results,field){
             if(err){
                 console.error(err);
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err
                 });
             }
@@ -81,7 +81,7 @@ router.post('/job/intro',async(req,res)=>{
         await connection.query(SQL1s,function(err,results,field){
             if(err){
                 console.error(err);
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err
                 });
             }
@@ -94,7 +94,7 @@ router.post('/job/intro',async(req,res)=>{
         await connection.query(SQL2s,function(err,results,field){
             if(err){
                 console.error(err);
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err
                 });
             }
@@ -112,7 +112,7 @@ router.post('/job/intro',async(req,res)=>{
         await connection.query(SQL3s,function(err,results,field){
             if(err){
                 console.error(err);
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err
                 });
             }
@@ -293,6 +293,12 @@ router.post('/subject/intro',async(req,res)=>{
         const connection = db.return_connection();
         
         connection.query(SQL,param,function(err,results,field){
+            if(err){
+                console.error(err);
+                return res.status(401).json({
+                    error: err
+                })
+            }
             if(stack !== "*"){
                 results.map(result=>{
                     for(let i=0;i<stack.length;i++){

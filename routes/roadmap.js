@@ -22,7 +22,7 @@ router.get('/main',async(req,res)=>{
         connection.query(SQL,function(err,results,field){
             if(err){
                 console.log(err.toString());
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err.toString()
                 })
             }

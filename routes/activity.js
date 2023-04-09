@@ -9,7 +9,7 @@ router.get('/comparative',async(req,res)=>{
         connection.query(SQL,function(err,results,fields){
             if(err){
                 console.error(err);
-                return res.status(400).json({
+                return res.status(401).json({
                     error: err
                 })
             }

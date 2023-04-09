@@ -17,7 +17,7 @@ router.get('/',async(req,res)=>{
         connection.query(SQL,[req.query.type],function(err,results,field){
             if(err){
                 console.error(err.toString());
-                return res.status(500).json({
+                return res.status(401).json({
                     error: err.toString()
                 })
             }

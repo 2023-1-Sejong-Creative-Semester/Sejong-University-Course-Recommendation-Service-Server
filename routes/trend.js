@@ -4,8 +4,8 @@ const db = require('../db');
 //개발 언어 트렌드
 router.get('/',async(req,res)=>{
 
-    const connection = db.return_connection();
-    const SQL = "Select * from trend";
+    //const connection = db.return_connection();
+    //const SQL = "Select * from trend";
 
     recruit_language = ["Java", "javascript", "aws"];
     recruit_tech = ["서버/백엔드", "프론트엔드", "SW/솔루션"];

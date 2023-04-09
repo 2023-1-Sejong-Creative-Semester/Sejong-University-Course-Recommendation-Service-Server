@@ -49,7 +49,7 @@ class collect {
                     const colleage = $(this).find(".content").find(".institution").text();
                     const title = $(this).find(".detail").find(".title").text();
                     const link = "https://do.sejong.ac.kr" + $(this).attr("href");
-                    if(colleage === "소프트웨어융합대학 " || colleage === "전자정보통신공학대학"){
+                    if(1/*colleage === "소프트웨어융합대학 " || colleage === "전자정보통신공학대학"*/){
                         activate.push({
                             colleage: colleage,
                             numbering: idx,
@@ -152,4 +152,5 @@ class collect {
         */
     }
 }
+
 module.exports = collect;
