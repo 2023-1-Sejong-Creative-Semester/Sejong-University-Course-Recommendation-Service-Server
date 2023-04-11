@@ -3,6 +3,7 @@ const db = require('../db');
 const mysql = require('mysql');
 
 router.post('/job',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
@@ -66,6 +67,7 @@ router.post('/job',async(req,res)=>{
 })
 
 router.post('/job/intro',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const job = req.body.job;
         const category = req.body.category;
@@ -156,6 +158,7 @@ router.post('/job/intro',async(req,res)=>{
 })
 
 router.post('/subject',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
@@ -233,6 +236,7 @@ router.post('/subject',async(req,res)=>{
 })
 
 router.post('/subject/intro',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;

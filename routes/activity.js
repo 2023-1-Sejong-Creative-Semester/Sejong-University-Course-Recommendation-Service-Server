@@ -2,6 +2,7 @@ const router = require('express').Router();
 const db = require('../db');
 
 router.get('/comparative',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const connection = db.return_connection();
         const SQL = "Select * from activate_comparative;";
