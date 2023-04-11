@@ -138,7 +138,7 @@ router.post('/job/intro',async(req,res)=>{
             return res.status(200).json({
                 job_info: job_info,
                 stack: stack,
-                subject: subject
+                c_name: subject
             })
         })
 
