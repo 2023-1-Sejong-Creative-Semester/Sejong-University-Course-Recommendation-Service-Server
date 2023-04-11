@@ -74,9 +74,9 @@ router.post('/job/intro',async(req,res)=>{
         const job = req.body.job;
         const category = req.body.category;
         
-        const result = [];
+        let job_info;
         let stack = [];
-
+        
         const SQL1 = "Select * from job_list where job = ? and category = ?; ";
         const SQL1s = mysql.format(SQL1, [job,category]); 
 
@@ -95,10 +95,9 @@ router.post('/job/intro',async(req,res)=>{
                     error: err
                 });
             }
-                        
-            result.push({
-                job_info: results[0]
-            });
+                   
+            job_info = results[0];
+
         })
 
         await connection.query(SQL2s,function(err,results,field){
@@ -112,11 +111,7 @@ router.post('/job/intro',async(req,res)=>{
 
             results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
             stack = results[0].stack;
-                        
-            result.push({
-                stack: results[0].stack
-            });
-            
+
         })
 
         await connection.query(SQL3s,function(err,results,field){
@@ -139,12 +134,11 @@ router.post('/job/intro',async(req,res)=>{
                 }
             })
                
-            result.push({
-                subject: subject
-            });
             
             return res.status(200).json({
-                results: result
+                job_info: job_info,
+                stack: stack,
+                subject: subject
             })
         })
 
