@@ -7,20 +7,20 @@ router.get('/',async(req,res)=>{
     //const connection = db.return_connection();
     //const SQL = "Select * from trend";
 
-    recruit_language = ["Java", "javascript", "aws"];
-    recruit_tech = ["서버/백엔드", "프론트엔드", "SW/솔루션"];
+    recruit_stack = ["Java", "javascript", "aws"];
+    recruit_job = ["서버/백엔드", "프론트엔드", "SW/솔루션"];
 
-    search_language = ["Java", "React", "spring boot"];
-    search_tech = ["Flutter", "Java", "프론트엔드"];
+    search_stack = ["Java", "React", "spring boot"];
+    search_job = ["Flutter", "Java", "프론트엔드"];
     
     return res.json({
         recruit:{
-            language: recruit_language,
-            tech: recruit_tech
+            stack: recruit_stack,
+            job: recruit_job
         },
         search: {
-            language: search_language,
-            tech: search_tech
+            stack: search_stack,
+            job: search_job
         }
     })
 
