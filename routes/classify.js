@@ -9,6 +9,8 @@ router.post('/job',async(req,res)=>{
         const stack = req.body.stack;
         const category = req.body.category;
 
+        console.log(req.body);
+
         console.log(stack);
         console.log(category);
 
