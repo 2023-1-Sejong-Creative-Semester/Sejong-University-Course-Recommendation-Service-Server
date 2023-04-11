@@ -8,6 +8,10 @@ router.post('/job',async(req,res)=>{
         const stack = req.body.stack;
         const category = req.body.category;
 
+        console.log(stack);
+        console.log(category);
+
+
         let SQL = "Select job_list.*, (select group_concat(distinct stack) from job_tag where job_list.job = job_tag.job) as stack from job_list ";
         SQL += "where job_list.job = ";
         SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job )";
@@ -23,6 +27,8 @@ router.post('/job',async(req,res)=>{
 
         let job_array = [];
 
+        console.log(SQL);
+
         connection.query(SQL,[category],function(err,results,field){
             if(err){
                 console.error(err);
@@ -30,7 +36,7 @@ router.post('/job',async(req,res)=>{
                     error: err
                 });
             }
-           // console.log(results);
+            console.log(results);
             if(stack !== "*"){
                 results.map(result=>{
                     for(let i=0;i<stack.length;i++){
