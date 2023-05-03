@@ -28,12 +28,12 @@ router.get('/comparative',async(req,res)=>{
 
 })
 
-router.get('/career',async(req,res)=>{
-    /*
+router.get('/curriculum',async(req,res)=>{
+    
     try{
         
         const connection = db.return_connection();
-        const SQL = "Select * from activate;";
+        const SQL = "Select * from activate_curriculum;";
 
         connection.query(SQL,function(err,results,fields){
             if(err){
@@ -42,8 +42,25 @@ router.get('/career',async(req,res)=>{
                     error: err
                 })
             }
+
+            const activate_curriculum = {};
+
+            const career = [];
+            const employment = [];
+            const regional = [];
+
+            results.map(element=>{
+                if(element.class=="career")career.push(element);
+                else if(element.class=="employment")employment.push(element);
+                else if(element.class=="regional")regional.push(element);
+            })
+
+            activate_curriculum.career = career;
+            activate_curriculum.employment = employment;
+            activate_curriculum.regional = regional;
+
             return res.json({
-                results: results
+                results: activate_curriculum
             })
         })
     }
@@ -53,7 +70,7 @@ router.get('/career',async(req,res)=>{
             error: err.toString()
         })
     }
-    */
+    
 })
 
 module.exports = router;
