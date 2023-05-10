@@ -53,7 +53,7 @@ router.get('/detail',async(req,res)=>{
         const index = parseInt(req.query.index);
 
         //현재 로드맵이 30개만 제공
-        if(index>10){
+        if(index>3){
             return res.status(402).json({
                 error: "현재 로드맵 페이지는 3개만 제공"
             })
@@ -70,7 +70,7 @@ router.get('/detail',async(req,res)=>{
             }
             
             const roadmap = [];
-            for(let i = (index-1)*5;i<(index)*5 && i<results.length;i++){
+            for(let i = (index-1)*10;i<(index)*10 && i<results.length;i++){
                 roadmap.push(results[i]);
             }
             return res.status(200).json({
