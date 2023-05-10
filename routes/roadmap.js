@@ -49,8 +49,15 @@ router.get('/main',async(req,res)=>{
 //로드맵 세부 페이지
 router.get('/detail',async(req,res)=>{
     try{
-        const roadmap = "https://roadmap.sh/";
+        const homepage = "https://roadmap.sh/";
+        const index = parseInt(req.query.index);
 
+        //현재 로드맵이 30개만 제공
+        if(index>3){
+            return res.status(402).json({
+                error: "현재 로드맵 페이지는 3개만 제공"
+            })
+        }
         const SQL = "select * from roadmap order by numbering;";
         const connection = db.return_connection();
     
@@ -61,12 +68,30 @@ router.get('/detail',async(req,res)=>{
                     error: err.toString()
                 })
             }
-    
+            
+            const roadmap = [];
+            for(let i = (index-1)*10;i<(index)*10 && i<results.length;i++){
+                roadmap.push(results[i]);
+            }
             return res.status(200).json({
-                homepage: roadmap,
-                roadmap: results
+                homepage: homepage,
+                roadmap: roadmap
             })
         })
+    }
+    catch(err){
+        console.error(err.toString());
+        return res.status(400).json({
+            error: err.toString()
+        })
+    }
+
+})
+
+//로드맵 세부 페이지
+router.post('/job',async(req,res)=>{
+    try{
+        const job = req.body.job;
     }
     catch(err){
         console.error(err.toString());

@@ -5,7 +5,7 @@ router.get('/comparative',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try{
         const connection = db.return_connection();
-        const SQL = "Select * from activate_comparative;";
+        const SQL = "Select * from activate_comparative Limit 5;";
 
         connection.query(SQL,function(err,results,fields){
             if(err){

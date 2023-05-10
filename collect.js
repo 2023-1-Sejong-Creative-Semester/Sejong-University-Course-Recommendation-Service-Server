@@ -34,7 +34,7 @@ class collect {
             })
         }
 
-        /*
+        
         await comparativeRefresh().then((url) => {
             const param = {};
             client.fetch(url, param, function (err, $, res) {
@@ -87,7 +87,7 @@ class collect {
                 
             });
         });
-        */
+        
 
         
         await careerRefresh().then((url) => {
