@@ -49,10 +49,11 @@ router.get('/curriculum',async(req,res)=>{
             const employment = [];
             const regional = [];
 
+            //5개 제한
             results.map(element=>{
-                if(element.class=="career")career.push(element);
-                else if(element.class=="employment")employment.push(element);
-                else if(element.class=="regional")regional.push(element);
+                if(element.class=="career" && career.length<5)career.push(element);
+                else if(element.class=="employment" && employment.length<5)employment.push(element);
+                else if(element.class=="regional" && regional.length<5)regional.push(element);
             })
 
             activate_curriculum.career = career;
