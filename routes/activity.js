@@ -29,7 +29,7 @@ router.get('/comparative',async(req,res)=>{
 })
 
 router.get('/curriculum',async(req,res)=>{
-    
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         
         const connection = db.return_connection();

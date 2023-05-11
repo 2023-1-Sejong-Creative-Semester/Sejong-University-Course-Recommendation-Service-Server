@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const collect = require('./collect');
 const collection = new collect();
+const cors = requier('cors');
 
 app.use(bodyParser.json());
 
@@ -25,10 +26,12 @@ app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
 app.use('/activity',activityRouter); 
+app.use(cors(corsOptions));
 
 db.connect();
 
 app.get('/', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     res.json({
         success: true,
     });

@@ -3,7 +3,7 @@ const db = require('../db');
 
 //메인 페이지 로드맵
 router.get('/main',async(req,res)=>{
-
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const roadmap = "https://roadmap.sh/";
 
@@ -48,6 +48,7 @@ router.get('/main',async(req,res)=>{
 
 //로드맵 세부 페이지
 router.get('/detail',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const homepage = "https://roadmap.sh/";
         const index = parseInt(req.query.index);
@@ -90,6 +91,7 @@ router.get('/detail',async(req,res)=>{
 
 //로드맵 세부 페이지
 router.post('/job',async(req,res)=>{
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         const job = req.body.job;   //한글로 들어옴
 

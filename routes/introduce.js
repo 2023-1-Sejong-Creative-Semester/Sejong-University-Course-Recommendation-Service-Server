@@ -3,7 +3,7 @@ const db = require('../db');
 
 //직무 소개
 router.get('/',async(req,res)=>{
-
+    res.header("Access-Control-Allow-Origin", "*");
     try{
         type = req.query.type;
     

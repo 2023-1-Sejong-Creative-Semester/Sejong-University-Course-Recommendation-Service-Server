@@ -3,7 +3,7 @@ const db = require('../db');
 
 //개발 언어 트렌드
 router.get('/',async(req,res)=>{
-
+    res.header("Access-Control-Allow-Origin", "*");
     //const connection = db.return_connection();
     //const SQL = "Select * from trend";
 
