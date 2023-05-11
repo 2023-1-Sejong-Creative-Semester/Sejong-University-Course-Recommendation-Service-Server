@@ -91,7 +91,16 @@ router.get('/detail',async(req,res)=>{
 //로드맵 세부 페이지
 router.post('/job',async(req,res)=>{
     try{
-        const job = req.body.job;
+        const job = req.body.job;   //한글로 들어옴
+
+        const SQL = "select numbering, roadmap from job_roadmap where job = ?";
+        const connection = db.return_connection();
+
+        connection.query(SQL,[job],function(err,results,field){
+            return res.status(200).json({
+                results: results
+            })
+        })
     }
     catch(err){
         console.error(err.toString());
