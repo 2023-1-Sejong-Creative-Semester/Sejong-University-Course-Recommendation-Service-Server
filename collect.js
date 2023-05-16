@@ -49,7 +49,7 @@ class collect {
                     const colleage = $(this).find(".content").find(".institution").text();
                     const title = $(this).find(".detail").find(".title").text();
                     const link = "https://do.sejong.ac.kr" + $(this).attr("href");
-                    if(title !== ''){
+                    if(title.search()){
                         activate.push({
                             colleage: colleage,
                             numbering: idx,
