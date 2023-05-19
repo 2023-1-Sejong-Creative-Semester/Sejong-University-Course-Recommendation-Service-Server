@@ -77,6 +77,10 @@ router.post('/job/intro',async(req,res)=>{
         let job_info;
         let stack = [];
         
+        let job_image = "https://github.com/2023-1-Sejong-Creative-Semester/Sejong-University-Course-Recommendation-Service-Server/blob/main/image/job/";
+        job_image += job + ".png?raw=true";
+        console.log(job_image);
+
         const SQL1 = "Select * from job_list where job = ? and category = ?; ";
         const SQL1s = mysql.format(SQL1, [job,category]); 
 
@@ -85,8 +89,9 @@ router.post('/job/intro',async(req,res)=>{
 
         const SQL3 = "Select * from course_tag; ";
         const SQL3s = mysql.format(SQL3, [job]); 
-    
+
         const connection = db.return_connection();
+
 
         await connection.query(SQL1s,function(err,results,field){
             if(err){
@@ -138,9 +143,11 @@ router.post('/job/intro',async(req,res)=>{
             return res.status(200).json({
                 job_info: job_info,
                 stack: stack,
-                c_name: subject
+                c_name: subject,
+                image: job_image
             })
         })
+
 
         
     }

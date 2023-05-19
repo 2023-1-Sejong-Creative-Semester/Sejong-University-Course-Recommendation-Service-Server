@@ -18,6 +18,7 @@ const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
 const activityRouter = require('./routes/activity');
+const testRouter = require('./routes/test');
 
 //app.use('',subjectRouter);
 
@@ -26,6 +27,7 @@ app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
 app.use('/activity',activityRouter); 
+app.use('/test',testRouter);
 
 db.connect();
 
