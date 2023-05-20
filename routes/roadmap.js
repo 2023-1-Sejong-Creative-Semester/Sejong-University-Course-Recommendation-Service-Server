@@ -93,16 +93,27 @@ router.get('/detail',async(req,res)=>{
 router.post('/job',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try{
-        const job = req.body.job;   //한글로 들어옴
 
-        const SQL = "select numbering, roadmap from job_roadmap where job = ?";
+        const job = req.body.job;   //한글로 들어옴
+        const category = req.body.category; 
+        console.log(job,category);
+
+        const SQL = "select name, numbering, link, logo from ( select roadmap from job_roadmap as B where job = ? and category = ? ) as job_roadmap_table join roadmap on job_roadmap_table.roadmap = roadmap.name;";
+        
         const connection = db.return_connection();
 
-        connection.query(SQL,[job],function(err,results,field){
+        await connection.query(SQL,[job, category],async function(err,results,field){
+            if(err){
+                console.error(err);
+                res.status(401).json({
+                    error: err
+                })
+            }
             return res.status(200).json({
-                results: results
+                roadmap: results
             })
         })
+
     }
     catch(err){
         console.error(err.toString());
