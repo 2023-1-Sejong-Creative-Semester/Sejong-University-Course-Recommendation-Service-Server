@@ -98,7 +98,7 @@ router.post('/job',async(req,res)=>{
         const category = req.body.category; 
         console.log(job,category);
 
-        const SQL = "select name, numbering, link, logo from ( select roadmap from job_roadmap as B where job = ? and category = ? ) as job_roadmap_table join roadmap on job_roadmap_table.roadmap = roadmap.name;";
+        const SQL = "select name, numbering, link, logo as image from ( select roadmap from job_roadmap as B where job = ? and category = ? ) as job_roadmap_table join roadmap on job_roadmap_table.roadmap = roadmap.name;";
         
         const connection = db.return_connection();
 
