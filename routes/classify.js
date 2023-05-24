@@ -87,11 +87,22 @@ router.post('/job/intro',async(req,res)=>{
         const SQL2 = "Select group_concat(distinct stack) as stack from job_tag where job = ?; ";
         const SQL2s = mysql.format(SQL2, [job]); 
 
-        const SQL3 = "Select * from course_tag; ";
-        const SQL3s = mysql.format(SQL3, [job]); 
+
+        const SQL3 = "Select * from course_tag;";
+        const SQL3s = mysql.format(SQL3);
+
+        
+
+		
+		
+	
+        let SQL4 = "select distinct (c_list.c_name), c_stack, numbering, instruction, c_type, semeter, credit ";
+        SQL4 += "from ( select c_tag.c_name, c_stack, numbering, instruction ";
+        SQL4 += "from ( select c_name, group_concat(stack) as c_stack from course_tag where c_name = ? ) as c_tag "
+        SQL4 += "join course_list ";
+        SQL4 += "on course_list.c_name = c_tag.c_name ) as c_list join re_main on re_main.c_name = c_list.c_name;";
 
         const connection = db.return_connection();
-
 
         await connection.query(SQL1s,function(err,results,field){
             if(err){
@@ -127,6 +138,34 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
 
+            const subject = [];
+
+            results.map(result=>{
+                for(let i=0;i<stack.length;i++){
+                    if(result.stack.indexOf(stack[i]+'\r')!== -1){
+                        subject.push(result.c_name);
+                        break;
+                    }
+                }
+            })
+               
+            
+            return res.status(200).json({
+                job_info: job_info,
+                stack: stack,
+                c_name: subject,
+                image: job_image
+            })
+        })
+
+        await connection.query(SQL4s,function(err,results,field){
+            if(err){
+                console.error(err);
+                return res.status(401).json({
+                    error: err
+                });
+            }
+
             
             const subject = [];
 
@@ -148,7 +187,6 @@ router.post('/job/intro',async(req,res)=>{
             })
         })
 
-
         
     }
     catch(err){
@@ -157,7 +195,6 @@ router.post('/job/intro',async(req,res)=>{
             error: err.toString()
         })
     }
-
 })
 
 router.post('/subject',async(req,res)=>{
