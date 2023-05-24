@@ -44,20 +44,24 @@ class collect {
                 }
                 
                 const activate = [];
+                $(".columns-4 > li").each(function (idx){
 
-                $("a").each(function (idx){
                     const colleage = $(this).find(".content").find(".institution").text();
                     const title = $(this).find(".detail").find(".title").text();
                     const link = "https://do.sejong.ac.kr" + $(this).attr("href");
-                    if(title.search()){
+                    const deadline = $(this).find("a > div.content > :nth-last-child(2) > :nth-child(4)").text();
+
+                    if(1){
                         activate.push({
                             colleage: colleage,
                             numbering: idx,
                             title: title,
-                            url: link
+                            url: link,
+                            deadline: deadline
                         })
                     }
-                })
+                    
+                })                
                 
                 
                 const connection = db.return_connection();
@@ -71,11 +75,11 @@ class collect {
                     }
                 })
 
-                const SQL = "insert into activate_comparative values (?,?,?,?)";
+                const SQL = "insert into activate_comparative values (?,?,?,?,?)";
 
                 console.log(activate);
                 activate.map(element=>{
-                    connection.query(SQL,[element.numbering,element.colleage,element.title,element.url],function(err,results,fields){
+                    connection.query(SQL,[element.numbering,element.colleage,element.title,element.url, element.deadline],function(err,results,fields){
                         if(err){
                             console.error(err);
                             return res.status(400).json({
@@ -116,7 +120,7 @@ class collect {
                         const link = "https://udream.sejong.ac.kr" + $(this).find("a").attr("href");
                         const image = "https://udream.sejong.ac.kr" + $(this).find("div.p-inner-img").attr("style").split("'")[1];
                         const subject = $(this).find("div.p-inner-txt h4").text();
-                        const deadline = $(this).find("span.text-666").text();
+                        const deadline = $(this).find("span.text-666").text().split("~ ")[1];
                         career.push({
                             numbering: idx,
                             url: link,
@@ -135,7 +139,7 @@ class collect {
                         const link = "https://udream.sejong.ac.kr" + $(this).find("a").attr("href");
                         const image = "https://udream.sejong.ac.kr" + $(this).find("div.p-inner-img").attr("style").split("'")[1];
                         const subject = $(this).find("div.p-inner-txt h4").text();
-                        const deadline = $(this).find("span.text-666").text();
+                        const deadline = $(this).find("span.text-666").text().split("~ ")[1];
                         employment.push({
                             numbering: idx+10,
                             url: link,
@@ -154,7 +158,7 @@ class collect {
                         const link = "https://udream.sejong.ac.kr" + $(this).find("a").attr("href");
                         const image = "https://udream.sejong.ac.kr" + $(this).find("div.p-inner-img").attr("style").split("'")[1];
                         const subject = $(this).find("div.p-inner-txt h4").text();
-                        const deadline = $(this).find("span.text-666").text();
+                        const deadline = $(this).find("span.text-666").text().split("~ ")[1];
                         regional.push({
                             numbering: idx+20,
                             url: link,

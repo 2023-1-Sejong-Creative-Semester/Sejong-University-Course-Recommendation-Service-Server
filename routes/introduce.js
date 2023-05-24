@@ -8,7 +8,7 @@ router.get('/',async(req,res)=>{
         type = req.query.type;
     
         const connection = db.return_connection();
-        let SQL = "select * from ??;";  //테이블명은 ??로 표현
+        let SQL = "select * from ?? order by numbering;";  //테이블명은 ??로 표현
     
         //Test
         console.log(type);

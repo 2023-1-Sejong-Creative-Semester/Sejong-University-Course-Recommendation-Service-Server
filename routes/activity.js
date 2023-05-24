@@ -5,7 +5,7 @@ router.get('/comparative',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try{
         const connection = db.return_connection();
-        const SQL = "Select * from activate_comparative Limit 5;";
+        const SQL = "Select * from activate_comparative order by numbering Limit 5;";
 
         connection.query(SQL,function(err,results,fields){
             if(err){
@@ -33,7 +33,7 @@ router.get('/curriculum',async(req,res)=>{
     try{
         
         const connection = db.return_connection();
-        const SQL = "Select * from activate_curriculum;";
+        const SQL = "Select * from activate_curriculum order by numbering Limit 5;";
 
         connection.query(SQL,function(err,results,fields){
             if(err){
@@ -79,7 +79,7 @@ router.get('/curriculum/web',async(req,res)=>{
     try{
         
         const connection = db.return_connection();
-        const SQL = "Select * from activate_curriculum order by numbering; ";
+        const SQL = "Select * from activate_curriculum order by numbering Limit 5; ";
 
         connection.query(SQL,function(err,results,fields){
             if(err){
