@@ -91,11 +91,6 @@ router.post('/job/intro',async(req,res)=>{
         const SQL3 = "Select * from course_tag;";
         const SQL3s = mysql.format(SQL3);
 
-        
-
-		
-		
-	
         let SQL4 = "select distinct (c_list.c_name), c_stack, numbering, instruction, c_type, semeter, credit ";
         SQL4 += "from ( select c_tag.c_name, c_stack, numbering, instruction ";
         SQL4 += "from ( select c_name, group_concat(stack) as c_stack from course_tag where c_name = ? ) as c_tag "

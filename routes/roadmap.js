@@ -70,13 +70,9 @@ router.get('/detail',async(req,res)=>{
                 })
             }
             
-            const roadmap = [];
-            for(let i = (index-1)*10;i<(index)*10 && i<results.length;i++){
-                roadmap.push(results[i]);
-            }
             return res.status(200).json({
                 homepage: homepage,
-                roadmap: roadmap
+                roadmap: results
             })
         })
     }
