@@ -169,23 +169,27 @@ router.post('/job/intro',async(req,res)=>{
 
             const subject = [];
             await results.map((element,idx)=>{
-                subject.push(element.c_name);
-                /*
+                //subject.push(element.c_name);
+                
                 element.stack = element.stack.split(',');
                 for(let i=0;i<element.stack.length;i++){
-                    console.log(element.stack[i]);
-                    if(stack.includes(element.stack[i]) !== undefined){
-                        //element.instruction = JSON.parse(element.instruction);
-                        //subject.push(element);
+                    if(stack.includes(element.stack[i])){
+                        element.instruction = JSON.parse(element.instruction);
+                        subject.push({
+                            numbering: idx,
+                            element: element 
+                        });
                         break;;
                     }
-                }*/
+                }
             })
             
+
+            console.log(subject);
             return res.status(200).json({
                 job_info: job_info,
                 stack: stack,
-                c_name: subject
+                subject: subject
             })
         })
 

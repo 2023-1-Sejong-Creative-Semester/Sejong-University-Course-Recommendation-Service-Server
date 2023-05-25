@@ -48,7 +48,7 @@ class collect {
 
                     const colleage = $(this).find(".content").find(".institution").text();
                     const title = $(this).find(".detail").find(".title").text();
-                    const link = "https://do.sejong.ac.kr" + $(this).attr("href");
+                    const link = "https://do.sejong.ac.kr" + $(this).find("a").attr("href");
                     const deadline = $(this).find("a > div.content > :nth-last-child(2) > :nth-child(4)").text();
 
                     if(1){
