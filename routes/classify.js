@@ -77,9 +77,11 @@ router.post('/job/intro',async(req,res)=>{
         let job_info;
         let stack = [];
         
+        /*
         let job_image = "https://github.com/2023-1-Sejong-Creative-Semester/Sejong-University-Course-Recommendation-Service-Server/blob/main/image/job/";
         job_image += job + ".png?raw=true";
         console.log(job_image);
+        */
 
         const SQL1 = "Select * from job_list where job = ? and category = ?; ";
         const SQL1s = mysql.format(SQL1, [job,category]); 
@@ -91,11 +93,20 @@ router.post('/job/intro',async(req,res)=>{
         const SQL3 = "Select * from course_tag;";
         const SQL3s = mysql.format(SQL3);
 
-        let SQL4 = "select distinct (c_list.c_name), c_stack, numbering, instruction, c_type, semeter, credit ";
-        SQL4 += "from ( select c_tag.c_name, c_stack, numbering, instruction ";
-        SQL4 += "from ( select c_name, group_concat(stack) as c_stack from course_tag where c_name = ? ) as c_tag "
-        SQL4 += "join course_list ";
-        SQL4 += "on course_list.c_name = c_tag.c_name ) as c_list join re_main on re_main.c_name = c_list.c_name;";
+
+        /*
+        select c_stack.c_name, department, stack, semeter, c_type, credit, instruction
+        from( select c_t.c_name, group_concat(concat(department, concat(" ",c_type))) as department, stack, 
+            group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit
+            from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t
+            join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;
+        */
+
+        let SQL4 = "select c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, c_type, credit, replace(instruction,'\r','') as instruction ";
+        SQL4 += "from( select c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
+        SQL4 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
+        SQL4 += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
+        SQL4 += "join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;";
 
         const connection = db.return_connection();
 
@@ -125,6 +136,7 @@ router.post('/job/intro',async(req,res)=>{
 
         })
 
+        /*
         await connection.query(SQL3s,function(err,results,field){
             if(err){
                 console.error(err);
@@ -144,16 +156,10 @@ router.post('/job/intro',async(req,res)=>{
                 }
             })
                
-            
-            return res.status(200).json({
-                job_info: job_info,
-                stack: stack,
-                c_name: subject,
-                image: job_image
-            })
         })
+*/
 
-        await connection.query(SQL4s,function(err,results,field){
+        await connection.query(SQL4,async function(err,results,field){
             if(err){
                 console.error(err);
                 return res.status(401).json({
@@ -161,24 +167,23 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
 
-            
             const subject = [];
-
-            results.map(result=>{
-                for(let i=0;i<stack.length;i++){
-                    if(result.stack.indexOf(stack[i]+'\r')!== -1){
-                        subject.push(result.c_name);
-                        break;
+            await results.map((element,idx)=>{
+                element.stack = element.stack.split(',');
+                for(let i=0;i<element.stack.length;i++){
+                    console.log(element.stack[i]);
+                    if(stack.includes(element.stack[i]) !== undefined){
+                        //element.instruction = JSON.parse(element.instruction);
+                        subject.push(element);
+                        break;;
                     }
                 }
             })
-               
             
             return res.status(200).json({
                 job_info: job_info,
                 stack: stack,
-                c_name: subject,
-                image: job_image
+                subject: subject,
             })
         })
 
