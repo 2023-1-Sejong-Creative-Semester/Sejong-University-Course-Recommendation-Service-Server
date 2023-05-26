@@ -4,18 +4,19 @@ const mysql = require('mysql');
 
 router.post('/job',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",["GET","POST"]);
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
         const category = req.body.category;
 
-        console.log(req.body);
+        //console.log(req.body);
 
-        console.log(stack);
-        console.log(category);
+        //console.log(stack);
+        //console.log(category);
 
 
-        let SQL = "Select job_list.*, (select group_concat(distinct stack) from job_tag where job_list.job = job_tag.job) as stack from job_list ";
+        let SQL = "Select job_list.*, replace((select group_concat(distinct stack) from job_tag where job_list.job = job_tag.job),'\r','') as stack from job_list ";
         SQL += "where job_list.job = ";
         SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job )";
         
@@ -30,7 +31,7 @@ router.post('/job',async(req,res)=>{
 
         let job_array = [];
 
-        console.log(SQL);
+        //console.log(SQL);
 
         connection.query(SQL,[category],function(err,results,field){
             if(err){
@@ -39,20 +40,22 @@ router.post('/job',async(req,res)=>{
                     error: err
                 });
             }
-            console.log(results);
-            if(stack !== "*"){
+            //console.log(results);
+            
                 results.map(result=>{
-                    for(let i=0;i<stack.length;i++){
-                        if(result.stack.indexOf(stack[i]+'\r')!== -1){
-                            //정규식 이용하여 \r 제거 후 split으로 배열로 변환
-                            result.stack = result.stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
-                            job_array.push(result);
-                            break;
+                    result.stack = result.stack.split(',');
+                    result.instruction = JSON.parse(result.instruction);
+                    if(stack !== "*"){
+                        for(let i=0;i<stack.length;i++){
+                            if(result.stack.indexOf(stack[i])!== -1){
+                                //정규식 이용하여 \r 제거 후 split으로 배열로 변환
+                                job_array.push(result);
+                                break;
+                            }
                         }
                     }
                 })
-            }
-            else job_array = results;
+            if(stack === "*") job_array = results;
             
             return res.status(200).json({
                 results: job_array
@@ -70,6 +73,7 @@ router.post('/job',async(req,res)=>{
 
 router.post('/job/intro',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",["GET","POST"]);
     try{
         const job = req.body.job;
         const category = req.body.category;
@@ -102,8 +106,8 @@ router.post('/job/intro',async(req,res)=>{
             join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;
         */
 
-        let SQL4 = "select c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, c_type, credit, replace(instruction,'\r','') as instruction ";
-        SQL4 += "from( select c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
+        let SQL4 = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction ";
+        SQL4 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL4 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
         SQL4 += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
         SQL4 += "join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;";
@@ -118,6 +122,7 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
                    
+            results[0].instruction = JSON.parse(results[0].instruction);
             job_info = results[0];
 
         })
@@ -168,13 +173,12 @@ router.post('/job/intro',async(req,res)=>{
             }
 
             const subject = [];
-            await results.map((element,idx)=>{
-                //subject.push(element.c_name);
-                
+            await results.map((element,idx)=>{                
                 element.stack = element.stack.split(',');
                 for(let i=0;i<element.stack.length;i++){
                     if(stack.includes(element.stack[i])){
                         element.instruction = JSON.parse(element.instruction);
+                        element.department = element.department.split(',');
                         subject.push({
                             numbering: idx,
                             element: element 
@@ -183,9 +187,7 @@ router.post('/job/intro',async(req,res)=>{
                     }
                 }
             })
-            
 
-            console.log(subject);
             return res.status(200).json({
                 job_info: job_info,
                 stack: stack,
@@ -205,69 +207,65 @@ router.post('/job/intro',async(req,res)=>{
 
 router.post('/subject',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",["GET","POST"]);
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
-        const category = req.body.category;
         const semeter = req.body.semester;
 
-        let SQL = "SELECT bbgs.*, rm.collage, rm.department, rm.semeter, rm.track ";
-        SQL += "FROM (SELECT cl.numbering, bgs.*, cl.instruction ";
-        SQL += "FROM (SELECT gj.c_name, gj.category,Group_concat(gj.job) AS job, gs.stack ";
-        SQL += "FROM   (SELECT ct.c_name, Group_concat(ct.stack) AS stack ";
-        SQL += "FROM   course_tag ct ";
-        SQL += "GROUP  BY ct.c_name) AS gs ";
-        SQL += "JOIN (SELECT ct.c_name, jt.* ";
-        SQL += "FROM   course_tag ct JOIN job_tag jt ON jt.stack = ct.stack) AS gj ON gj.c_name = gs.c_name ";
-        SQL += "GROUP  BY gj.c_name, gj.category) AS bgs JOIN course_list cl ON cl.c_name = bgs.c_name) AS bbgs ";
-        SQL += "JOIN re_main rm ON rm.c_name = bbgs.c_name ";
+        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction, ";
+        SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
+        SQL += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
+        SQL += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
+        SQL += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
+        SQL += "join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name ";
 
         const param = [];
 
         //여기서 WHERE 절 추가 stack 은 따로
-        if(colleage !== "*" || category !== "*" || semeter !== "*"){
+        if(colleage !== "*" || semeter !== "*"){
             SQL += "WHERE ";
         }
         
         if(colleage !== "*"){
-            SQL += "rm.collage = ? ";
+            SQL += "collage = ? ";
             param.push(colleage);
-        }
-        if(category !== "*"){
-            if(param.length !== 0)
-                SQL += "and "
-                
-            SQL += "rm.category = ? ";
-            
-            param.push(category);
         }
         if(semeter !== "*"){
             if(param.length !== 0)
                 SQL += "and "
-            SQL += "rm.semeter = ? ";
+            SQL += "semeter = ? ";
             param.push(semeter);
         }
 
-        SQL += "ORDER  BY c_name; ";
+        //SQL += "ORDER  BY c_name; ";
+
+        //console.log(SQL);
 
         const connection = db.return_connection();
         
         let subject_array = [];
 
         connection.query(SQL,param,function(err,results,field){
-            if(stack !== "*"){
-                results.map(result=>{
+            //console.log(results);
+            results.map((result,idx)=>{
+                result.department = result.department.split(',');
+                result.instruction = JSON.parse(result.instruction);
+                result.stack = result.stack.split(',');
+                result.category = result.category.split(',');
+                result.numbering = idx+1;
+
+                if(stack !== "*"){
                     for(let i=0;i<stack.length;i++){
-                        if(result.stack.indexOf(stack[i]+'\r')!== -1){
+                        if(result.stack.indexOf(stack[i]) !== -1){
                             //정규식 이용하여 \r 제거 후 split으로 배열로 변환
-                            result.stack = result.stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
                             subject_array.push(result);
                             break;
                         }
                     }
-                })
-            }
-            else subject_array = results;
+                }
+            })
+            if(stack==="*")subject_array = results;
             return res.status(200).json({
                 results: subject_array
             })
@@ -283,95 +281,95 @@ router.post('/subject',async(req,res)=>{
 
 router.post('/subject/intro',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods",["GET","POST"]);
     try{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
         const category = req.body.category;
         const semeter = req.body.semester;
-        const department = req.body.department;
         const c_name = req.body.c_name;
 
-        let SQL = "SELECT bbgs.*, rm.collage, rm.department, rm.semeter, rm.track ";
-        SQL += "FROM (SELECT cl.numbering, bgs.*, cl.instruction ";
-        SQL += "FROM (SELECT gj.c_name, gj.category,Group_concat(gj.job) AS job, gs.stack ";
-        SQL += "FROM   (SELECT ct.c_name, Group_concat(ct.stack) AS stack ";
-        SQL += "FROM   course_tag ct ";
-        SQL += "GROUP  BY ct.c_name) AS gs ";
-        SQL += "JOIN (SELECT ct.c_name, jt.* ";
-        SQL += "FROM   course_tag ct JOIN job_tag jt ON jt.stack = ct.stack) AS gj ON gj.c_name = gs.c_name ";
-        SQL += "GROUP  BY gj.c_name, gj.category) AS bgs JOIN course_list cl ON cl.c_name = bgs.c_name) AS bbgs ";
-        SQL += "JOIN re_main rm ON rm.c_name = bbgs.c_name ";
-
+        let SQL1 = "select collage as collage, c_stack.c_name, ";
+        SQL1 += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category,"
+        SQL1 += " department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction ";
+        SQL1 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
+        SQL1 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
+        SQL1 += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
+        SQL1 += "join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name ";
+        
         const param = [];
 
         //여기서 WHERE 절 추가 stack 은 따로
-        if(colleage !== "*" || category !== "*" || semeter !== "*" || c_name !== "*" || department !== "*"){
-            SQL += "WHERE ";
+        if(colleage !== "*" || semeter !== "*" || c_name !== "*"){
+            SQL1 += "WHERE ";
         }
         
         if(colleage !== "*"){
-            SQL += "rm.collage = ? ";
+            SQL1 += "collage = ? ";
             param.push(colleage);
-        }
-        if(category !== "*"){
-            if(param.length !== 0)
-                SQL += "and "
-                
-            SQL += "rm.category = ? ";
-            
-            param.push(category);
         }
         if(semeter !== "*"){
             if(param.length !== 0)
-                SQL += "and "
-            SQL += "rm.semeter = ? ";
+                SQL1 += "and "
+            SQL1 += "semeter = ? ";
             param.push(semeter);
         }
-
         if(c_name !== "*"){
             if(param.length !== 0)
-                SQL += "and "
-            SQL += "rm.c_name = ? ";
+                SQL1 += "and "
+            SQL1 += "c_stack.c_name = ? ";
             param.push(c_name);
         }
 
-        if(department !== "*"){
-            if(param.length !== 0)
-                SQL += "and "
-            SQL += "rm.department = ? ";
-            param.push(department);
-        }
+        //SQL1 += "ORDER  BY c_name; ";
 
-        SQL += "ORDER  BY c_name; ";
-
-        let subject_array = [];
+        let subject_info = {};
 
         const connection = db.return_connection();
         
-        connection.query(SQL,param,function(err,results,field){
+        await connection.query(SQL1,param,function(err,results,field){
             if(err){
                 console.error(err);
                 return res.status(401).json({
                     error: err
                 })
             }
+
+            results[0].department = results[0].department.split(',');
+            results[0].instruction = JSON.parse(results[0].instruction);
+            results[0].stack = results[0].stack.split(',');
+            results[0].category = results[0].category.split(',');
+
             if(stack !== "*"){
-                results.map(result=>{
-                    for(let i=0;i<stack.length;i++){
-                        if(result.stack.indexOf(stack[i]+'\r')!== -1){
-                            //정규식 이용하여 \r 제거 후 split으로 배열로 변환
-                            result.stack = result.stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
-                            subject_array.push(result);
-                            break;
-                        }
+                for(let i=0;i<stack.length;i++){
+                    if(result.stack.indexOf(stack[i]) !== -1){
+                        //정규식 이용하여 \r 제거 후 split으로 배열로 변환
+                        subject_array.push(result);
+                        break;
                     }
+                }
+            }
+
+            subject_info = results[0];
+
+
+        });
+
+        const SQL2 = "select group_concat(distinct job) as job from job_tag where category = ?;";
+        await connection.query(SQL2,[category],function(err,results,field){
+            if(err){
+                console.error(err);
+                return res.status(401).json({
+                    error: err
                 })
             }
-            else subject_array = results;
+            subject_info.job = results[0].job.split(',');
+
             return res.status(200).json({
-                results: subject_array
+                results: subject_info
             })
-        })
+        });
+
     }
     catch(err){
         console.error(err);
