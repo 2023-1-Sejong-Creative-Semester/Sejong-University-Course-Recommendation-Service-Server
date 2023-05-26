@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 
 const collect = require('./collect');
 const collection = new collect();
-const cors = require('cors');
 
 app.use(bodyParser.json());
 
