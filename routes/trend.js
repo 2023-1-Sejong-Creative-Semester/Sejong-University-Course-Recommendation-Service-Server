@@ -34,11 +34,15 @@ router.get('/',async(req,res)=>{
     return res.json({
         recruit:{
             stack: recruit_stack,
-            job: recruit_job
+            stack_logo: recruit_stack_logo,
+            job: recruit_job,
+            job_logo: recruit_job_logo
         },
         search: {
             stack: search_stack,
-            job: search_job
+            stack_logo: search_stack_logo,
+            job: search_job,
+            job_logo: search_job_logo
         }
     })
 
