@@ -23,7 +23,7 @@ const testRouter = require('./routes/test');
 //app.use('',subjectRouter);
 
 let corsOptions = {
-    origin: ['*'],
+    origin: ['*', 'null'],
     credentials: true
 }
 
