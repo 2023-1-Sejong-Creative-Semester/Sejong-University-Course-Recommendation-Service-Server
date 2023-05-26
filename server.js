@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const db = require('./db');
 const port = 3001;
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const collect = require('./collect');
@@ -21,6 +22,13 @@ const activityRouter = require('./routes/activity');
 const testRouter = require('./routes/test');
 
 //app.use('',subjectRouter);
+
+let corsOptions = {
+    origin: ['*'],
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 
 app.use('/roadmap',roadmapRouter);
 app.use('/trend',trendRouter);
