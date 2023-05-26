@@ -10,17 +10,12 @@ const collection = new collect();
 
 app.use(bodyParser.json());
 
-//const jobRouter = require('./routes/job');
-//const subjectRouter = require('./routes/subject');
-
 const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
 const activityRouter = require('./routes/activity');
 const testRouter = require('./routes/test');
-
-//app.use('',subjectRouter);
 
 let corsOptions = {
     origin: ['*', 'null'],
