@@ -179,8 +179,8 @@ router.post('/job/intro',async(req,res)=>{
                     if(stack.includes(element.stack[i])){
                         element.instruction = JSON.parse(element.instruction);
                         element.department = element.department.split(',');
+                        element.numbering = idx;
                         subject.push({
-                            numbering: idx,
                             element: element 
                         });
                         break;;
@@ -259,15 +259,22 @@ router.post('/subject',async(req,res)=>{
                     for(let i=0;i<stack.length;i++){
                         if(result.stack.indexOf(stack[i]) !== -1){
                             //정규식 이용하여 \r 제거 후 split으로 배열로 변환
-                            subject_array.push(result);
+                            subject_array.push({
+                                element: result
+                            });
                             break;
                         }
                     }
                 }
+                else{
+                    subject_array.push({
+                        element: result
+                    })
+                }
             })
-            if(stack==="*")subject_array = results;
+            
             return res.status(200).json({
-                results: subject_array
+                subject: subject_array
             })
         })
     }
@@ -339,7 +346,11 @@ router.post('/subject/intro',async(req,res)=>{
             results[0].instruction = JSON.parse(results[0].instruction);
             results[0].stack = results[0].stack.split(',');
             results[0].category = results[0].category.split(',');
+            results[0].numbering = 0;
 
+            subject_info = results[0];
+
+            /*
             if(stack !== "*"){
                 for(let i=0;i<stack.length;i++){
                     if(result.stack.indexOf(stack[i]) !== -1){
@@ -350,8 +361,10 @@ router.post('/subject/intro',async(req,res)=>{
                 }
             }
 
-            subject_info = results[0];
-
+            else {
+                
+            }
+            */
 
         });
 
@@ -363,10 +376,10 @@ router.post('/subject/intro',async(req,res)=>{
                     error: err
                 })
             }
-            subject_info.job = results[0].job.split(',');
 
             return res.status(200).json({
-                results: subject_info
+                element: subject_info,
+                job: results[0].job.split(',')
             })
         });
 
