@@ -22,8 +22,10 @@ router.post('/job',async(req,res)=>{
         
         //대분류가 있는 경우 where절에 category 검색 추가
         if(category !== "*"){
-            SQL += " and category = ?;";
+            SQL += " and category = ? ";
         }
+
+        SQL += " order by category desc, job ";
     
         const connection = db.return_connection();
         
@@ -368,7 +370,12 @@ router.post('/subject/intro',async(req,res)=>{
 
         });
 
-        const SQL2 = "select group_concat(distinct job) as job from job_tag where category = ?;";
+
+        let SQL2 = "select numbering, category, instruction, image, job_stack.* ";
+        SQL2 += "from job_list join( select replace(group_concat(distinct(stack)),'\r','') as stack, job ";
+        SQL2 += "from job_tag group by job ) as job_stack on job_list.job = job_stack.job ";
+        SQL2 += "where category = ? order by job asc"
+
         await connection.query(SQL2,[category],function(err,results,field){
             if(err){
                 console.error(err);
@@ -377,9 +384,14 @@ router.post('/subject/intro',async(req,res)=>{
                 })
             }
 
+            results.map(result=>{
+                result.instruction = JSON.parse(result.instruction);
+                result.stack = result.stack.split(',');
+            })
+
             return res.status(200).json({
                 element: subject_info,
-                job: results[0].job.split(',')
+                job: results
             })
         });
 
