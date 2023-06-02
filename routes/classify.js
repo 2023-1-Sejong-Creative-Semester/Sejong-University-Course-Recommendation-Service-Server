@@ -22,7 +22,7 @@ router.post('/job',async(req,res)=>{
         
         //대분류가 있는 경우 where절에 category 검색 추가
         if(category !== "*"){
-            SQL += " and category = ? ";
+            SQL += " and category REGEXP ? ";
         }
 
         SQL += " order by category desc, job ";
@@ -230,13 +230,13 @@ router.post('/subject',async(req,res)=>{
         }
         
         if(colleage !== "*"){
-            SQL += "collage = ? ";
+            SQL += "collage REGEXP ? ";
             param.push(colleage);
         }
         if(semeter !== "*"){
             if(param.length !== 0)
                 SQL += "and "
-            SQL += "semeter = ? ";
+            SQL += "semeter REGEXP ? ";
             param.push(semeter);
         }
 
