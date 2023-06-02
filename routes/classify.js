@@ -215,7 +215,7 @@ router.post('/subject',async(req,res)=>{
         const stack = req.body.stack;
         const semeter = req.body.semester;
 
-        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction, ";
+        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction, image, ";
         SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
         SQL += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
