@@ -256,7 +256,6 @@ router.post('/subject',async(req,res)=>{
                 result.stack = result.stack.split(',');
                 result.category = result.category.split(',');
                 result.numbering = idx+1;
-
                 if(stack !== "*"){
                     for(let i=0;i<stack.length;i++){
                         if(result.stack.indexOf(stack[i]) !== -1){
