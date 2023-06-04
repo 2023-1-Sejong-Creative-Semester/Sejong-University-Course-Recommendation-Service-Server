@@ -10,12 +10,6 @@ router.post('/job',async(req,res)=>{
         const stack = req.body.stack;
         const category = req.body.category;
 
-        //console.log(req.body);
-
-        //console.log(stack);
-        //console.log(category);
-
-
         let SQL = "Select job_list.*, replace((select group_concat(distinct stack) from job_tag where job_list.job = job_tag.job),'\r','') as stack from job_list ";
         SQL += "where job_list.job = ";
         SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job )";
@@ -46,7 +40,13 @@ router.post('/job',async(req,res)=>{
             
                 results.map(result=>{
                     result.stack = result.stack.split(',');
-                    result.instruction = JSON.parse(result.instruction);
+                    result.instruction = ({
+                        long_script : result.long_script,
+                        short_script: result.short_script
+                    });
+                    delete result.long_script;
+                    delete result.short_script;
+                    
                     if(stack !== "*"){
                         for(let i=0;i<stack.length;i++){
                             if(result.stack.indexOf(stack[i])!== -1){
@@ -108,7 +108,7 @@ router.post('/job/intro',async(req,res)=>{
             join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;
         */
 
-        let SQL4 = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction ";
+        let SQL4 = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script ";
         SQL4 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL4 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
         SQL4 += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
@@ -124,7 +124,13 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
                    
-            results[0].instruction = JSON.parse(results[0].instruction);
+            results[0].instruction = {
+                long_script: results[0].long_script,
+                short_script: results[0].short_script
+            }
+            delete results[0].long_script;
+            delete results[0].short_script;
+            
             job_info = results[0];
 
         })
@@ -179,7 +185,14 @@ router.post('/job/intro',async(req,res)=>{
                 element.stack = element.stack.split(',');
                 for(let i=0;i<element.stack.length;i++){
                     if(stack.includes(element.stack[i])){
-                        element.instruction = JSON.parse(element.instruction);
+                        element.instruction = ({
+                            long_script : element.long_script,
+                            short_script: element.short_script
+                        });
+
+                        delete element.long_script;
+                        delete element.short_script;
+
                         element.department = element.department.split(',');
                         element.numbering = idx;
                         subject.push({
@@ -215,7 +228,7 @@ router.post('/subject',async(req,res)=>{
         const stack = req.body.stack;
         const semeter = req.body.semester;
 
-        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction, image, ";
+        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script, image, ";
         SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
         SQL += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
@@ -252,7 +265,14 @@ router.post('/subject',async(req,res)=>{
             //console.log(results);
             results.map((result,idx)=>{
                 result.department = result.department.split(',');
-                result.instruction = JSON.parse(result.instruction);
+                result.instruction = {
+                    long_script : result.long_script,
+                    short_script: result.short_script
+                };
+
+                delete result.long_script;
+                delete result.short_script;
+
                 result.stack = result.stack.split(',');
                 result.category = result.category.split(',');
                 result.numbering = idx+1;
@@ -299,7 +319,7 @@ router.post('/subject/intro',async(req,res)=>{
 
         let SQL1 = "select collage as collage, c_stack.c_name, image, ";
         SQL1 += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category,"
-        SQL1 += " department, replace(stack,'\r','') as stack, semeter, credit, replace(instruction,'\r','') as instruction ";
+        SQL1 += " department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script ";
         SQL1 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL1 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
         SQL1 += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
@@ -344,7 +364,14 @@ router.post('/subject/intro',async(req,res)=>{
             }
 
             results[0].department = results[0].department.split(',');
-            results[0].instruction = JSON.parse(results[0].instruction);
+
+            results[0].instruction = {
+                long_script: results[0].long_script,
+                short_script: results[0].short_script
+            }
+            delete results[0].long_script;
+            delete results[0].short_script;
+
             results[0].stack = results[0].stack.split(',');
             results[0].category = results[0].category.split(',');
             results[0].numbering = 0;
@@ -370,7 +397,7 @@ router.post('/subject/intro',async(req,res)=>{
         });
 
 
-        let SQL2 = "select numbering, category, instruction, image, job_stack.* ";
+        let SQL2 = "select numbering, category, long_script, short_script, image, job_stack.* ";
         SQL2 += "from job_list join( select replace(group_concat(distinct(stack)),'\r','') as stack, job ";
         SQL2 += "from job_tag group by job ) as job_stack on job_list.job = job_stack.job ";
         SQL2 += "where category = ? order by job asc"
@@ -384,7 +411,12 @@ router.post('/subject/intro',async(req,res)=>{
             }
 
             results.map(result=>{
-                result.instruction = JSON.parse(result.instruction);
+                result.instruction = ({
+                        long_script : result.long_script,
+                        short_script: result.short_script
+                });
+                delete result.long_script;
+                delete result.short_script;
                 result.stack = result.stack.split(',');
             })
 
