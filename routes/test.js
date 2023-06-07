@@ -24,11 +24,6 @@ router.get('/',async(req,res)=>{
             connection.query(SQL1,function(err,results,field){
                 if(err){
                     console.error(err);
-                    /*
-                    return res.status(401).json({
-
-                    });
-                    */
                 }
 
             })

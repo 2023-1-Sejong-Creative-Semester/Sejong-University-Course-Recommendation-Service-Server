@@ -4,8 +4,6 @@ const db = require('../db');
 //개발 언어 트렌드
 router.get('/',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
-    //const connection = db.return_connection();
-    //const SQL = "Select * from trend";
 
     recruit_stack = ["Java", "javascript", "aws"];
     recruit_job = ["서버/백엔드", "프론트엔드", "SW/솔루션"];
@@ -29,8 +27,6 @@ router.get('/',async(req,res)=>{
 //개발 언어 트렌드
 router.get('/web',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
-    //const connection = db.return_connection();
-    //const SQL = "Select * from trend";
 
     recruit_stack = [];
     recruit_stack.push({

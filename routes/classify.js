@@ -27,8 +27,6 @@ router.post('/job',async(req,res)=>{
 
         let job_array = [];
 
-        //console.log(SQL);
-
         connection.query(SQL,[category],function(err,results,field){
             if(err){
                 console.error(err);
@@ -36,7 +34,6 @@ router.post('/job',async(req,res)=>{
                     error: err
                 });
             }
-            //console.log(results);
             
                 results.map(result=>{
                     result.stack = result.stack.split(',');
@@ -82,12 +79,6 @@ router.post('/job/intro',async(req,res)=>{
         
         let job_info;
         let stack = [];
-        
-        /*
-        let job_image = "https://github.com/2023-1-Sejong-Creative-Semester/Sejong-University-Course-Recommendation-Service-Server/blob/main/image/job/";
-        job_image += job + ".png?raw=true";
-        console.log(job_image);
-        */
 
         const SQL1 = "Select * from job_list where job = ? and category = ?; ";
         const SQL1s = mysql.format(SQL1, [job,category]); 
@@ -99,14 +90,6 @@ router.post('/job/intro',async(req,res)=>{
         const SQL3 = "Select * from course_tag;";
         const SQL3s = mysql.format(SQL3);
 
-
-        /*
-        select c_stack.c_name, department, stack, semeter, c_type, credit, instruction
-        from( select c_t.c_name, group_concat(concat(department, concat(" ",c_type))) as department, stack, 
-            group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit
-            from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t
-            join re_main on re_main.c_name = c_t.c_name group by c_t.c_name ) as c_stack join course_list on course_list.c_name = c_stack.c_name;
-        */
 
         let SQL4 = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script ";
         SQL4 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
@@ -149,28 +132,6 @@ router.post('/job/intro',async(req,res)=>{
 
         })
 
-        /*
-        await connection.query(SQL3s,function(err,results,field){
-            if(err){
-                console.error(err);
-                return res.status(401).json({
-                    error: err
-                });
-            }
-
-            const subject = [];
-
-            results.map(result=>{
-                for(let i=0;i<stack.length;i++){
-                    if(result.stack.indexOf(stack[i]+'\r')!== -1){
-                        subject.push(result.c_name);
-                        break;
-                    }
-                }
-            })
-               
-        })
-*/
 
         await connection.query(SQL4,async function(err,results,field){
             if(err){
@@ -252,10 +213,6 @@ router.post('/subject',async(req,res)=>{
             SQL += "semeter REGEXP ? ";
             param.push(semeter);
         }
-
-        //SQL += "ORDER  BY c_name; ";
-
-        //console.log(SQL);
 
         const connection = db.return_connection();
         
@@ -349,7 +306,6 @@ router.post('/subject/intro',async(req,res)=>{
             param.push(c_name);
         }
 
-        //SQL1 += "ORDER  BY c_name; ";
 
         let subject_info = {};
 
@@ -378,21 +334,6 @@ router.post('/subject/intro',async(req,res)=>{
 
             subject_info = results[0];
 
-            /*
-            if(stack !== "*"){
-                for(let i=0;i<stack.length;i++){
-                    if(result.stack.indexOf(stack[i]) !== -1){
-                        //정규식 이용하여 \r 제거 후 split으로 배열로 변환
-                        subject_array.push(result);
-                        break;
-                    }
-                }
-            }
-
-            else {
-                
-            }
-            */
 
         });
 

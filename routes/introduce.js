@@ -9,10 +9,6 @@ router.get('/',async(req,res)=>{
     
         const connection = db.return_connection();
         let SQL = "select * from ?? order by numbering;";  //테이블명은 ??로 표현
-    
-        //Test
-        console.log(type);
-        //Test
 
         connection.query(SQL,[req.query.type],function(err,results,field){
             if(err){
@@ -21,10 +17,6 @@ router.get('/',async(req,res)=>{
                     error: err.toString()
                 })
             }
-
-            //테스트
-            console.log(results);
-            //테스트
 
             return res.json({
                 data: results
@@ -45,29 +37,6 @@ router.get('/',async(req,res)=>{
 router.get('/stackinfo',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try{
-        /*
-        const SQL = "select distinct stack from job_tag;";
-        const connection = db.return_connection();
-
-        connection.query(SQL,function(err,results,field){
-            if(err){
-                console.error(err);
-                return res.status(401).json({
-                    error: err
-                })
-            }
-
-            const stack = [];
-
-            results.map(element=>{
-                stack.push(element.stack.split('\r')[0]);
-            })
-
-            return res.status(200).json({
-                stack: stack
-            })
-        })
-        */
 
         return res.status(200).json({
             stack: ["Java","Spring","React","C","Python","Javascript","C++","C#","Git","SQL","Node.js","Linux","Android","iOS","Unity","AWS"]

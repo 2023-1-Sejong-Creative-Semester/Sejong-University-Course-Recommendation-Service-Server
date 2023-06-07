@@ -103,11 +103,7 @@ class collect {
                 }
                 
                 const activate_curriculum = {};
-
-                //console.log(body);
-                //console.log($.html());
-
-                
+ 
                 //진로 프로그램
                 const career = [];
                 const employment = [];
@@ -171,12 +167,7 @@ class collect {
                 })
                 activate_curriculum.regional = regional;
 
-
-                //console.log(activate_curriculum);
-
                 const connection = db.return_connection();
-
-                //sdfdsf
                 
                 connection.query("truncate activate_curriculum",function(err,results,fields){
                     if(err){
