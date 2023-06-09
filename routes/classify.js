@@ -42,7 +42,7 @@ router.post('/job',async(req,res)=>{
                 results.map(result=>{
                     
                     if(result.stack != null){
-                        result.stack = result.stack.split(',');
+                        result.stack = result.stack.split(',').filter(stack => stack !== '');
                     }
 
                     result.instruction = ({
@@ -134,7 +134,7 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
 
-            results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
+            results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',').filter(stack => stack !== '');
             stack = results[0].stack;
 
         })
@@ -150,7 +150,7 @@ router.post('/job/intro',async(req,res)=>{
 
             const subject = [];
             await results.map((element,idx)=>{                
-                element.stack = element.stack.split(',');
+                element.stack = element.stack.split(',').filter(stack => stack !== '');
                 for(let i=0;i<element.stack.length;i++){
                     if(stack.includes(element.stack[i])){
                         element.instruction = ({
