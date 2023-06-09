@@ -40,7 +40,13 @@ router.post('/job',async(req,res)=>{
             }
             
                 results.map(result=>{
-                    if(typeof result.stack === "array")result.stack = result.stack.split(',');
+                    
+                    if(result.stack != null){
+                        console.log( result.stack);
+                        result.stack = result.stack.split(',');
+                    }
+                    
+
                     result.instruction = ({
                         long_script : result.long_script,
                         short_script: result.short_script
@@ -130,8 +136,13 @@ router.post('/job/intro',async(req,res)=>{
                 });
             }
 
+            /*
+            if(results[0].stack != null){
 
-            if(typeof results[0].stack === "array")results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
+            }
+            */
+
+            results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
             stack = results[0].stack;
 
         })
@@ -236,8 +247,14 @@ router.post('/subject',async(req,res)=>{
 
                 console.log(result);
 
-                if(typeof result.stack === "array")result.stack = result.stack.split(',');
-                if(typeof result.category === "array")result.category = result.category.split(',');
+                if(result.stack != null){
+                    result.stack = result.stack.split(',').filter(stack=> stack !== '');
+                }
+                
+
+                if(result.category != null)result.category = result.category.split(',');
+                else result.category = [];
+
                 result.numbering = idx+1;
                 if(stack !== "*"){
                     for(let i=0;i<stack.length;i++){
@@ -334,8 +351,13 @@ router.post('/subject/intro',async(req,res)=>{
             delete results[0].long_script;
             delete results[0].short_script;
 
-            if(typeof results[0].stack === "array")results[0].stack = results[0].stack.split(',');
-            if(typeof results[0].category === "array")results[0].category = results[0].category.split(',');
+            if(results[0].stack != null){
+                results[0].stack = results[0].stack.split(',').filter(stack=> stack !== '');    
+            }
+
+            if(results[0].category != null)results[0].category = results[0].category.split(',');
+                else results[0].category = [];
+
             results[0].numbering = 0;
 
             subject_info = results[0];
