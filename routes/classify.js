@@ -16,7 +16,7 @@ router.post('/job',async(req,res)=>{
         
         //대학이 분류된 경우
         if(colleage === "전자정보공학대학"){
-            SQL += " and category REGEXP '전자|정보/통신";
+            SQL += " and category REGEXP '전자|정보/통신'";
         }
         //대분류가 있는 경우 where절에 category 검색 추가
         if(category !== "*"){
@@ -42,10 +42,8 @@ router.post('/job',async(req,res)=>{
                 results.map(result=>{
                     
                     if(result.stack != null){
-                        console.log( result.stack);
                         result.stack = result.stack.split(',');
                     }
-                    
 
                     result.instruction = ({
                         long_script : result.long_script,
@@ -135,12 +133,6 @@ router.post('/job/intro',async(req,res)=>{
                     error: err
                 });
             }
-
-            /*
-            if(results[0].stack != null){
-
-            }
-            */
 
             results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
             stack = results[0].stack;
