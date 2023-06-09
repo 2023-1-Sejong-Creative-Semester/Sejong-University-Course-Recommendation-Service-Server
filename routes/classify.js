@@ -40,7 +40,7 @@ router.post('/job',async(req,res)=>{
             }
             
                 results.map(result=>{
-                    result.stack = result.stack.split(',');
+                    if(typeof result.stack === "array")result.stack = result.stack.split(',');
                     result.instruction = ({
                         long_script : result.long_script,
                         short_script: result.short_script
@@ -131,7 +131,7 @@ router.post('/job/intro',async(req,res)=>{
             }
 
 
-            results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
+            if(typeof results[0].stack === "array")results[0].stack = results[0].stack.replace(/(?:\r\n|\r|\n)/g, '').split(',');
             stack = results[0].stack;
 
         })
@@ -194,7 +194,7 @@ router.post('/subject',async(req,res)=>{
         const semeter = req.body.semester;
 
         let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script, image, ";
-        SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
+        SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON replace(jt.stack,'\r','') = replace(ct.stack,'\r','') and replace(jt.stack,'\r','') != '' and replace(ct.stack,'\r','') != '' GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
         SQL += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
         SQL += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
@@ -234,8 +234,10 @@ router.post('/subject',async(req,res)=>{
                 delete result.long_script;
                 delete result.short_script;
 
-                result.stack = result.stack.split(',');
-                result.category = result.category.split(',');
+                console.log(result);
+
+                if(typeof result.stack === "array")result.stack = result.stack.split(',');
+                if(typeof result.category === "array")result.category = result.category.split(',');
                 result.numbering = idx+1;
                 if(stack !== "*"){
                     for(let i=0;i<stack.length;i++){
@@ -332,8 +334,8 @@ router.post('/subject/intro',async(req,res)=>{
             delete results[0].long_script;
             delete results[0].short_script;
 
-            results[0].stack = results[0].stack.split(',');
-            results[0].category = results[0].category.split(',');
+            if(typeof results[0].stack === "array")results[0].stack = results[0].stack.split(',');
+            if(typeof results[0].category === "array")results[0].category = results[0].category.split(',');
             results[0].numbering = 0;
 
             subject_info = results[0];
@@ -362,7 +364,7 @@ router.post('/subject/intro',async(req,res)=>{
                 });
                 delete result.long_script;
                 delete result.short_script;
-                result.stack = result.stack.split(',');
+                if(typeof result.stack === "array")result.stack = result.stack.split(',');
             })
 
             return res.status(200).json({
