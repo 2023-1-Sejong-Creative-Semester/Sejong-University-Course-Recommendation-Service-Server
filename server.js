@@ -15,7 +15,6 @@ const trendRouter = require('./routes/trend');
 const introRouter = require('./routes/introduce');
 const classifyRouter = require('./routes/classify');
 const activityRouter = require('./routes/activity');
-const testRouter = require('./routes/test');
 
 let corsOptions = {
     origin: ['*', 'null'],
