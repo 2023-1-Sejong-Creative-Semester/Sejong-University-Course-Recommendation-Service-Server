@@ -294,7 +294,7 @@ router.post('/subject/intro',async(req,res)=>{
         const c_name = req.body.c_name;
 
         let SQL1 = "select collage as collage, c_stack.c_name, image, ";
-        SQL1 += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON jt.stack = ct.stack GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category,"
+        SQL1 += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON replace(jt.stack,'\r','') = replace(ct.stack,'\r','') and replace(jt.stack,'\r','') != '' and replace(ct.stack,'\r','') != '' GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category,"
         SQL1 += " department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script ";
         SQL1 += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL1 += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
@@ -337,6 +337,8 @@ router.post('/subject/intro',async(req,res)=>{
                     error: err
                 })
             }
+
+            console.log(results[0]);
 
             results[0].department = results[0].department.split(',');
 
