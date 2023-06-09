@@ -37,7 +37,6 @@ router.get('/',async(req,res)=>{
 router.get('/stackinfo',async(req,res)=>{
     res.header("Access-Control-Allow-Origin", "*");
     try{
-
         return res.status(200).json({
             stack: ["Java","Spring","React","C","Python","Javascript","C++","C#","Git","SQL","Node.js","Linux","Android","iOS","Unity","AWS"]
         })

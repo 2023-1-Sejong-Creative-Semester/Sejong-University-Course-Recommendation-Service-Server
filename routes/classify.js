@@ -14,6 +14,10 @@ router.post('/job',async(req,res)=>{
         SQL += "where job_list.job = ";
         SQL += "( select distinct(job_tag.job) from job_tag where job_list.job = job_tag.job )";
         
+        //대학이 분류된 경우
+        if(colleage === "전자정보공학대학"){
+            SQL += " and category REGEXP '전자|정보/통신";
+        }
         //대분류가 있는 경우 where절에 category 검색 추가
         if(category !== "*"){
             SQL += " and category REGEXP ? ";

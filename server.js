@@ -29,7 +29,6 @@ app.use('/trend',trendRouter);
 app.use('/introduce',introRouter);
 app.use('/classify',classifyRouter);
 app.use('/activity',activityRouter); 
-app.use('/test',testRouter);
 
 db.connect();
 
