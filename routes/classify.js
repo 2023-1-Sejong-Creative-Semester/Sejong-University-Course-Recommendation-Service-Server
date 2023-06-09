@@ -44,6 +44,7 @@ router.post('/job',async(req,res)=>{
                     if(result.stack != null){
                         result.stack = result.stack.split(',').filter(stack => stack !== '');
                     }
+                    else result.stack = [];
 
                     result.instruction = ({
                         long_script : result.long_script,
@@ -52,17 +53,20 @@ router.post('/job',async(req,res)=>{
                     delete result.long_script;
                     delete result.short_script;
                     
-                    if(stack !== "*"){
+                    if(stack !== "*" && stack.length !== 0){
                         for(let i=0;i<stack.length;i++){
                             if(result.stack.indexOf(stack[i])!== -1){
                                 //정규식 이용하여 \r 제거 후 split으로 배열로 변환
+                                console.log(result);
                                 job_array.push(result);
                                 break;
                             }
                         }
                     }
                 })
-            if(stack === "*") job_array = results;
+
+                console.log(stack);
+            if(stack === "*" || stack.length === 0) job_array = results;
             
             return res.status(200).json({
                 results: job_array
