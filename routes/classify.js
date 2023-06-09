@@ -386,7 +386,9 @@ router.post('/subject/intro',async(req,res)=>{
                 });
                 delete result.long_script;
                 delete result.short_script;
-                if(typeof result.stack === "array")result.stack = result.stack.split(',');
+                if(result.stack != null){
+                    results.stack = result.stack.split(',').filter(stack=> stack !== '');    
+                }
             })
 
             return res.status(200).json({
