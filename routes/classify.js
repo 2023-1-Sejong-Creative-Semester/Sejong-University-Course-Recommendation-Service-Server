@@ -199,9 +199,12 @@ router.post('/subject',async(req,res)=>{
         const colleage = req.body.colleage;
         const stack = req.body.stack;
         const semeter = req.body.semester;
+        const category = req.body.category;
 
-        let SQL = "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script, image, ";
-        SQL += "( SELECT group_concat(DISTINCT jt.category) AS category FROM course_tag ct JOIN job_tag jt ON replace(jt.stack,'\r','') = replace(ct.stack,'\r','') and replace(jt.stack,'\r','') != '' and replace(ct.stack,'\r','') != '' GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
+        let SQL = "select * from ("
+        SQL += "select collage, c_stack.c_name, department, replace(stack,'\r','') as stack, semeter, credit, long_script, short_script, image, ";
+        SQL += "( SELECT replace(group_concat(DISTINCT jt.category),'\r','') AS category FROM course_tag ct JOIN job_tag jt ON replace(jt.stack,'\r','') = replace(ct.stack,'\r','') and replace(jt.stack,'\r','') != '' and replace(ct.stack,'\r','') != '' "; 
+        SQL +=" GROUP BY ct.c_name having ct.c_name = c_stack.c_name )as category "
         SQL += "from( select group_concat(distinct collage) as collage, c_t.c_name, group_concat(concat(department, concat(' ',c_type))) as department, stack, ";
         SQL += "group_concat(distinct semeter) as semeter, group_concat(distinct c_type) as c_type, group_concat(distinct credit) as credit "
         SQL += "from( select c_name, group_concat(stack) as stack from course_tag group by c_name ) as c_t ";
@@ -225,13 +228,25 @@ router.post('/subject',async(req,res)=>{
             param.push(semeter);
         }
 
+        SQL += " ) as subject ";
+
+        
+        if(category !== "*"){
+            SQL += "where category REGEXP ? ";
+            param.push(category);
+        }
+
+        //console.log(SQL);
+        //console.log(param);
+
         const connection = db.return_connection();
         
         let subject_array = [];
 
-        connection.query(SQL,param,function(err,results,field){
+        console.log(category);
+        connection.query(SQL,param, async function(err,results,field){
             //console.log(results);
-            results.map((result,idx)=>{
+            await results.map((result,idx)=>{
                 result.department = result.department.split(',');
                 result.instruction = {
                     long_script : result.long_script,
@@ -241,9 +256,9 @@ router.post('/subject',async(req,res)=>{
                 delete result.long_script;
                 delete result.short_script;
 
-                console.log(result);
+                //console.log(result);
 
-                if(result.stack != null){
+                if(result.stack != null && result.stack.length !== 0){
                     result.stack = result.stack.split(',').filter(stack=> stack !== '');
                 }
                 
@@ -251,8 +266,17 @@ router.post('/subject',async(req,res)=>{
                 if(result.category != null)result.category = result.category.split(',');
                 else result.category = [];
 
+                
+                /*
+                if(category !== '*' && result.category.length !== 0){
+                    result.category = result.category.filter(ct=>ct===category);
+                    console.log(result.category);
+                }
+                */
+
                 result.numbering = idx+1;
-                if(stack !== "*"){
+                //console.log(result.stack.length);
+                if(stack !== "*" && stack.length !== 0){
                     for(let i=0;i<stack.length;i++){
                         if(result.stack.indexOf(stack[i]) !== -1){
                             //정규식 이용하여 \r 제거 후 split으로 배열로 변환
@@ -264,11 +288,14 @@ router.post('/subject',async(req,res)=>{
                     }
                 }
                 else{
+                    //console.log(result);
                     subject_array.push({
                         element: result
                     })
                 }
             })
+
+            //onsole.log(subject_array);
             
             return res.status(200).json({
                 subject: subject_array
@@ -349,9 +376,10 @@ router.post('/subject/intro',async(req,res)=>{
             delete results[0].long_script;
             delete results[0].short_script;
 
-            if(results[0].stack != null){
+            if(results[0].stack != null ){
                 results[0].stack = results[0].stack.split(',').filter(stack=> stack !== '');    
             }
+            else results[0].stack = null;
 
             if(results[0].category != null)results[0].category = results[0].category.split(',');
                 else results[0].category = [];
@@ -384,9 +412,10 @@ router.post('/subject/intro',async(req,res)=>{
                 });
                 delete result.long_script;
                 delete result.short_script;
-                if(result.stack != null){
+                if(result.stack != null && result.stack.length !== 0){
                     result.stack = result.stack.split(',').filter(stack=> stack !== '');    
                 }
+                else result.stack = [];
             })
 
             return res.status(200).json({
