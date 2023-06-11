@@ -18,6 +18,10 @@ router.post('/job',async(req,res)=>{
         if(colleage === "전자정보공학대학"){
             SQL += " and category REGEXP '전자|정보/통신'";
         }
+        else if(colleage === "소프트웨어융합대학"){
+            SQL += " and category Not REGEXP '전자|정보/통신'";
+        }
+
         //대분류가 있는 경우 where절에 category 검색 추가
         if(category !== "*"){
             SQL += " and category REGEXP ? ";
@@ -366,6 +370,7 @@ router.post('/subject/intro',async(req,res)=>{
             }
 
             console.log(results[0]);
+            
 
             results[0].department = results[0].department.split(',');
 
