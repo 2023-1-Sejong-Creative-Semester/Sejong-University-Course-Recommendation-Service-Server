@@ -9,6 +9,7 @@ const collect = require('./collect');
 const collection = new collect();
 
 app.use(bodyParser.json());
+app.use(express.static(__dirname + "/public"))
 
 const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
@@ -33,9 +34,12 @@ db.connect();
 
 app.get('/', (req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
+    /*
     res.json({
         success: true,
     });
+    */
+   res.sendFile(__dirname + "/index.html");
 });
 
 app.listen(port, () => {
@@ -53,6 +57,6 @@ setInterval(async function () {
     readfun();
     db.connect();
     
-}, 3600000*24); //24시간마다 두드림 크롤링 3600000*2
+}, 3600000*24); //24시간마다 두드림 크롤링 3600000*24
 
 
