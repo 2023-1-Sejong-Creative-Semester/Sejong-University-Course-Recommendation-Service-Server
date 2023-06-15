@@ -9,7 +9,7 @@ const collect = require('./collect');
 const collection = new collect();
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/public"));
 
 const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
@@ -39,8 +39,20 @@ app.get('/', (req, res) => {
         success: true,
     });
     */
-   res.sendFile(__dirname + "/index.html");
+   res.sendFile(__dirname + "/public/index.html");
 });
+
+/*
+app.get('/pages/job.html', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    
+    res.json({
+        success: true,
+    });
+    
+   res.sendFile(__dirname + "/public/job.html");
+});
+*/
 
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
