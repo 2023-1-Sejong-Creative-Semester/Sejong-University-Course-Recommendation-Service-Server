@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sejong Creative Semester</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/index-content.css">
+</head>
+
+<body>
+    <div class="header">
+        <nav class="navbar">
+            <div class="navbar_logo">
+                <a href="index.html">
+                <img src="Image/mainLogo.png" style="height:47px;" alt="메인로고">
+                </a>
+            </div>
+    
+            <ul class="navbar_menu">
+                <li><a href="pages/job.html" class="menu-item">직무</a></li>
+                <li><a href="pages/class.html" class="menu-item">수업</a></li>
+                <li><a href="pages/department.html" class="menu-item" id="menu-department">학과</a></li>
+                <!-- <li><a href="pages/job-detail.html" class="menu-item" id="menu-department">직무상세</a></li>
+                <li><a href="pages/class-detail.html" class="menu-item" id="menu-department">수업상세</a></li> -->
+            </ul>
+            <form id="search" action="#" method="get">
+                <input type="text" name="search" placeholder="Search">
+                <!-- <button type="submit">검색</button> -->
+            </form>
+        </nav>
+        <div style="width: 100%; height: 10px; background-color: #952535;"></div>
+        <div id="menu-department-info" style="display:none; width: 100%; height: 100px; background-color:white;"></div>
+    </div>
+    
+
+    <div id="main">
+        <div class="sidebar">
+            <div class="sidebar-search">
+
+                <div id="goto-website">
+                    <img src="Image/sejong_logo.jpeg" alt="세종대학교로고">
+                    <a href="http://www.sejong.ac.kr/" target="_blank" style="text-decoration:none">세종대학교 포털 <p style="margin: 0;">바로가기<p/></a>
+                </div>
+                <div id="goto-website">
+                    <img src="Image/sejong_logo.jpeg" alt="세종대학교로고">
+                    <a href="https://portal.sejong.ac.kr/" target="_blank" style="text-decoration:none">학사정보시스템 <p style="margin: 0;">바로가기<p/></a>
+                </div>
+                <div id="goto-website">
+                    <img src="Image/blackboard.png" alt="블랙보드로고">
+                    <a href="https://blackboard.sejong.ac.kr/" target="_blank" style="text-decoration:none">블랙보드 <p style="margin: 0;">바로가기<p/></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="index-container">
+
+            <div id="index-top-container">
+                <div class="index-activity">
+                    <div class="index-activity-title">
+                        <span style="font-size: 1.5em;">두드림</span>
+                        <a href="https://do.sejong.ac.kr/" target="_blank">
+                            <img src="Image/plus.png" style="width: 30px; height: auto;">
+                        </a>
+                    </div>
+                    <article id="dodream-container">
+
+                        <!-- <div class="index-activity-content">
+                            <div class="index-activity-content-title">[소프트웨어융합대학] 오늘의 점심은 뭘까요?</div>
+                            <div class="index-activity-content-date">2022-06-06</div>
+                        </div><div class="index-activity-content">
+                            <div class="index-activity-content-title">[소프트웨어융합대학] 오늘의 점심은 뭘까요?</div>
+                            <div class="index-activity-content-date">2022-06-06</div>
+                        </div><div class="index-activity-content">
+                            <div class="index-activity-content-title">[소프트웨어융합대학] 오늘의 점심은 뭘까요?</div>
+                            <div class="index-activity-content-date">2022-06-06</div>
+                        </div><div class="index-activity-content">
+                            <div class="index-activity-content-title">[소프트웨어융합대학] 오늘의 점심은 뭘까요?</div>
+                            <div class="index-activity-content-date">2022-06-06</div>
+                        </div>
+                        <div class="index-activity-content">
+                            <div class="index-activity-content-title">[소프트웨어융합대학] 오늘의 점심은 뭘까요?</div>
+                            <div class="index-activity-content-date">2022-06-06</div>
+                        </div> -->
+                    </article>
+                </div>
+
+                <p style= width:7%></p>
+
+                <div class="index-activity">
+                    <div class="index-activity-title">
+                        <span style="font-size: 1.5em;">유드림</span>
+                        <a href="https://udream.sejong.ac.kr/" target="_blank">
+                            <img src="Image/plus.png" style="width: 30px; height: auto;">
+                        </a>
+                    </div>
+                    <article id="curriculum-container">
+                        
+                    </article>
+                </div>
+            </div>
+
+            <div id="index-bottom-container">
+                <div id="top3-wrapper">
+
+                    <!-- <div id="top3-title">
+                        <div style="font-size:1.2em; text-align: center;">회사 선호 순위 TOP 3</div>
+                        <div id="top3-date">2022.02.02 기준</div>
+                    </div>
+                    <div id="top3-container">
+                        <div class="top3-content">
+                            <div style="font-size:1.5em;margin-left: 10%;">카카오</div>
+                            <img style="height: 100%; margin-right: 10%;" src="Image/android.png" alt=카카오이미지">
+                        </div>
+                        <div class="top3-content">
+                            <div style="font-size:1.5em;margin-left: 10%;">우아한 형제들</div>
+                            <img style="height: 100%; margin-right: 10%;" src="Image/android.png" alt=카카오이미지">
+                        </div>
+                        <div class="top3-content">
+                            <div style="font-size:1.5em;margin-left: 10%;">애플</div>
+                            <img style="height: 100%; margin-right: 10%;" src="Image/android.png" alt=카카오이미지">
+                        </div>
+                    </div> -->
+
+                </div>
+
+                <p style= width:7%></p>
+                <div id="roadmap">
+                    <div class="index-activity-title">
+                        <span style="font-size: 1.5em;">로드맵</span>
+                        <a href="https://roadmap.sh/" target="_blank">
+                            <img src="Image/plus.png" style="width: 30px; height: auto;">
+                        </a>
+                    </div>
+                    <ol id="roadmap-container">
+                        <div id="roadmap0"></div>
+                        <div id="roadmap1"></div>
+                        <div id="roadmap2"></div>
+                        <div id="roadmap3"></div>
+                        <div id="roadmap4"></div>
+                        <div id="roadmap5"></div>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+
+<script src="javascript/roadmap.js"></script> 
+<script src="javascript/curriculum.js"></script>
+<script src="javascript/dodream.js"></script>
+<script src="javascript/trend.js"></script>
+</body>
+
+</html>

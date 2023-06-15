@@ -1,0 +1,142 @@
+.job-detail-container{
+    padding: 0 7%;
+    width: 100%;
+}
+.job-content-mainpage{
+    background-color: white;
+    padding:70px 7%;
+    /* height: 100%; */
+}
+#header{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+}
+.job-image{
+    text-align: center; 
+    height: 200px;
+    width: 400px;
+}
+#header> #header-info{
+    width: 100%;
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#header-info hr{
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    border: 0;
+    background-color: #979797;
+}
+
+.job-content-mainpage>#mainJobdetail{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#job-top{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex: 2;
+    margin-bottom: 20px;
+    min-height: 200px;
+}
+
+#job-info-container{
+    /* height: 100%; */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color:#F4F4F4;
+    border-radius: 10px;
+}
+
+.job-roadmap-container{
+    height: 100%;
+    flex:1;
+    border-radius: 10px;
+    background-color:#F4F4F4;
+}
+
+.job-roadmap-list{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 20px; /* 행과 열 사이의 간격을 설정합니다. */
+    list-style: none; /* 기본 목록 스타일을 제거합니다. */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 10px;
+    text-align: center;
+}
+.job-roadmap-list >div {
+    width: 100%;
+    height: 100px; /* 네모칸의 세로 크기를 설정합니다. */
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+     /* 네모칸의 배경색을 설정합니다. */
+}
+#class-roadmap-list{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 20px; /* 행과 열 사이의 간격을 설정합니다. */
+    list-style: none; /* 기본 목록 스타일을 제거합니다. */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 10px;
+    /* overflow: auto; */
+    text-align: center;
+}
+#class-roadmap-list >div {
+    width: 100%;
+    height: 100px; /* 네모칸의 세로 크기를 설정합니다. */
+    border-radius: 10px;
+    display: flex;
+    background-color: white;
+     /* 네모칸의 배경색을 설정합니다. */
+}
+
+.job-bottom{
+    background-color:#F4F4F4;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 300px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    overflow: auto;
+}
+#bottom-course-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 20px; /* 행과 열 사이의 간격을 설정합니다. */
+    list-style: none; /* 기본 목록 스타일을 제거합니다. */
+    padding: 0;
+    margin: 10px;
+}
+#bottom-course-list >div {
+    width: 100%;
+    min-height: 100px; /* 네모칸의 세로 크기를 설정합니다. */
+    border-radius: 10px;
+    justify-content:space-between;
+    display:flex;
+    flex-direction:column;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 10px;
+     /* 네모칸의 배경색을 설정합니다. */
+}
+#bottom-course-list .description{
+    margin: 4px 0 4px 0;
+    font-size: small;
+}
+.job-bottom .content-tag{
+    margin-bottom: 0;
+}

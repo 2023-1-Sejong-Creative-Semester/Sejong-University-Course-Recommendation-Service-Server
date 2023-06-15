@@ -9,7 +9,7 @@ const collect = require('./collect');
 const collection = new collect();
 
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/Front"));
 
 const roadmapRouter = require('./routes/roadmap');
 const trendRouter = require('./routes/trend');
@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
         success: true,
     });
     */
-   res.sendFile(__dirname + "/public/index.html");
+   res.sendFile(__dirname + "/Front/index.html");
 });
 
 /*
